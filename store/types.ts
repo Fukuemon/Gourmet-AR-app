@@ -18,3 +18,40 @@ export interface PROPS_PROFILE {
 export interface PROPS_NICKNAME {
     nickName: string;
 }
+
+/*postSlice.ts */
+export interface PROPS_NEWPOST {
+    restaurant: string;
+    category: string;
+    menu_item: string;
+    menu_item_photo: File | null;
+    menu_item_model: File | null;
+    review_text: string
+    score: number;
+    price: number;
+}
+
+export interface PROPS_RESTAURANT {
+    name: string;
+    location: string;
+    post: number[]; //紐づいてる投稿のidを格納
+}
+
+export interface PROPS_CATEGORY {
+    name: string;
+    post: number[] //紐づいてる投稿のidを格納
+}
+
+/*Post.tsx ポストコンポーネントで使用する型*/
+export interface PROPS_POST {
+    postId: number; //投稿のid
+    loginId: number; //ログインしているユーザーのid
+    author: number; //投稿をしたユーザーのid
+    restaurant: string; //レストランのid
+    category: string; //カテゴリのid
+    menu_item: string
+    imageUrl: string;
+    modelUrl: string;
+
+
+}
