@@ -1,7 +1,7 @@
-import React from "react";
+import { useState } from "react";
+import { useRouter } from "next/router";
 import { AppDispatch } from "../store/store";
 import { useSelector, useDispatch } from "react-redux";
-import Modal from "react-modal";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -13,238 +13,156 @@ import {
   resetOpenSignIn,
   setOpenSignUp,
   resetOpenSignUp,
-  fetchCredStart, //非同期関数
-  fetchCredEnd,
-  fetchAsyncLogin,
-  fetchAsyncRegister,
-  fetchAsyncGetMyProf,
-  fetchAsyncGetProfs,
+  fetchCredStart, //ローディング処理の開始
+  fetchCredEnd, // ローディングの終了
+  fetchAsyncLogin, // JWTトークンを取得する非同期関数
+  fetchAsyncRegister, //新規ユーザー作成
+  fetchAsyncGetMyProf, //プロフィールを作成する
+  fetchAsyncGetProfs, //プロフィールを取得する
   fetchAsyncCreateProf,
 } from "../store/auth/authSlice";
 
 const Auth: React.FC = () => {
-  const openSignIn = useSelector(selectOpenSignIn);
-  const openSignUp = useSelector(selectOpenSignUp);
-  const isLoadingAuth = useSelector(selectIsLoadingAuth);
-  const dispatch: AppDispatch = useDispatch();
+  const [isLogin, setIsLogin] = useState(true); // フォームがログインモードかどうかのステートを管理
+  const router = useRouter(); //useRouterをインポート(ルーティングの機能)
+  const openSignIn = useSelector(selectOpenSignIn); // ログイン画面が開かれているかのステートを取得
+  const openSignUp = useSelector(selectOpenSignUp); // サインアップ画面が開かれているかのステートを取得
+  const isLoadingAuth = useSelector(selectIsLoadingAuth); // 認証ローディングが行われているかどうかのステートを取得
+  const dispatch: AppDispatch = useDispatch(); //useDispatchを使い、アクションを発行できるdispatch関数を取得
 
   return (
-    <>
-      <Modal
-        isOpen={openSignUp}
-        onRequestClose={async () => {
-          await dispatch(resetOpenSignUp());
-        }}
-        className="mx-auto mt-20 w-80 h-96 p-8 transform translate-y-1/4 border rounded-lg bg-white"
-        overlayClassName="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-start justify-center"
-      >
-        <Formik
-          initialErrors={{ email: "required" }}
-          initialValues={{ email: "", password: "" }}
-          onSubmit={async (values) => {
-            await dispatch(fetchCredStart());
-            const resultReg = await dispatch(fetchAsyncRegister(values));
-
-            if (fetchAsyncRegister.fulfilled.match(resultReg)) {
-              await dispatch(fetchAsyncLogin(values));
-              await dispatch(fetchAsyncCreateProf({ nickName: "anonymous" }));
-              await dispatch(fetchAsyncGetProfs());
-              await dispatch(fetchAsyncGetMyProf());
-            }
-            await dispatch(fetchCredEnd());
-            await dispatch(resetOpenSignIn());
-          }}
-          validationSchema={Yup.object().shape({
-            email: Yup.string()
-              .email("email format is wrong")
-              .required("email is must"),
-            password: Yup.string().required("password is must").min(4),
-          })}
-        >
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            values,
-            errors,
-            touched,
-            isValid,
-          }) => (
-            <form onSubmit={handleSubmit}>
-              <div>
-                <h1 className="font-playball font-normal text-center text-2xl">
-                  グルグラム
-                </h1>
-                {/* プログレスバー*/}
-                <div className="my-4 flex justify-center">
-                  {isLoadingAuth && <div className="loader"></div>}
-                </div>
-
-                {/* email入力フォーム */}
-                <input
-                  placeholder="email"
-                  type="input"
-                  name="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                  className="border mb-4 p-2 w-full rounded"
-                />
-                {touched.email && errors.email ? (
-                  <div className="text-purple-600 text-center my-2">
-                    {errors.email}
-                  </div>
-                ) : null}
-
-                {/* パスワード入力フォーム */}
-                <input
-                  placeholder="password"
-                  type="password"
-                  name="password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
-                  className="border mb-4 p-2 w-full rounded"
-                />
-                {touched.password && errors.password ? (
-                  <div className="text-purple-600 text-center my-2">
-                    {errors.password}
-                  </div>
-                ) : null}
-
-                {/* サブミットボタン */}
-                <button
-                  type="submit"
-                  className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded text-white ${!isValid && 'cursor-not-allowed"
-                  disabled={!isValid}
-                >
-                  新規登録
-                </button>
-                {/* ログインと作成の切り替えボタン */}
-                <span
-                  className="text-blue-500 text-center cursor-pointer"
-                  onClick={async () => {
-                    await dispatch(setOpenSignIn());
-                    await dispatch(resetOpenSignUp());
-                  }}
-                >
-                  すでにアカウントをお持ちですか ?
-                </span>
-              </div>
-            </form>
-          )}
-        </Formik>
-      </Modal>
-
-      <Modal
-        isOpen={openSignIn}
-        onRequestClose={async () => {
-          await dispatch(resetOpenSignIn());
-        }}
-        className="mx-auto mt-20 w-80 h-96 p-8 transform translate-y-1/4 border rounded-lg bg-white"
-        overlayClassName="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-start justify-center"
-      >
-        <Formik
-          initialErrors={{ email: "required" }}
-          initialValues={{ email: "", password: "" }}
-          onSubmit={async (values) => {
-            await dispatch(fetchCredStart());
-            const result = await dispatch(fetchAsyncLogin(values));
-            if (fetchAsyncLogin.fulfilled.match(result)) {
-              await dispatch(fetchAsyncGetProfs());
-              // await dispatch(fetchAsyncGetPosts());
-              // await dispatch(fetchAsyncGetComments());
-              await dispatch(fetchAsyncGetMyProf());
-            }
-            await dispatch(fetchCredEnd());
-            await dispatch(resetOpenSignIn());
-          }}
-          validationSchema={Yup.object().shape({
-            email: Yup.string()
-              .email("email format is wrong")
-              .required("email is must"),
-            password: Yup.string().required("password is must").min(4),
-          })}
-        >
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            values,
-            errors,
-            touched,
-            isValid,
-          }) => (
-            <div>
-              <form onSubmit={handleSubmit}>
-                <div className="flex flex-col">
-                  {/* .auth_signUp */}
-                  <h1 className="font-playball font-normal text-center text-2xl">
-                    ググプラム
-                  </h1>{" "}
-                  {/* .auth_title */}
-                  <br />
-                  {/* プログレスバー*/}
-                  <div className="my-4 flex justify-center">
-                    {isLoadingAuth && <div className="loader"></div>}
-                  </div>
-                  <br />
-                  <input
-                    placeholder="email"
-                    type="input"
-                    name="email"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.email}
-                  />
-                  {touched.email && errors.email ? (
-                    <div className="text-purple-600 text-center my-2">
-                      {errors.email}
-                    </div>
-                  ) : null}
-                  <br />
-                  <input
-                    placeholder="password"
-                    type="password"
-                    name="password"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.password}
-                  />
-                  {touched.password && errors.password ? (
-                    <div className="text-purple-600 text-center my-2">
-                      {errors.password}
-                    </div>
-                  ) : null}
-                  <br />
-                  <br />
-                  <button
-                    type="submit"
-                    className={`w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded text-white ${
-                      !isValid && "cursor-not-allowed"
-                    }`}
-                    disabled={!isValid}
+    <Formik
+      initialErrors={{ email: "required" }} // 初期のエラー状態を設定。emailフィールドは初めから必須。
+      initialValues={{ email: "", password: "" }} // フォームの初期値を設定。emailとpasswordは初めから空に
+      // フォームが提出されたときに実行される関数を定義。
+      onSubmit={async (values) => {
+        await dispatch(fetchCredStart()); // ローディング状態のアクション
+        let result;
+        if (isLogin) {
+          // ログインモードの場合
+          result = await dispatch(fetchAsyncLogin(values)); // 入力(value)を引数としてログインアクションを発行
+          await dispatch(fetchAsyncGetMyProf()); // 自分のプロフィールを取得するアクションを発行
+          router.push("/main-page");
+        } else {
+          // 新規登録モードの場合
+          // ユーザー登録が成功した場合、ログインを行い、プロフィールを作成し、プロフィール一覧と自身のプロフィールを取得。
+          result = await dispatch(fetchAsyncRegister(values)); // ユーザー登録アクション
+          if (fetchAsyncRegister.fulfilled.match(result)) {
+            await dispatch(fetchAsyncCreateProf({ nickName: "anonymous" })); // プロフィールを作成するアクション
+            await dispatch(fetchAsyncGetProfs()); // 全てのプロフィールを取得するアクション
+            await dispatch(fetchAsyncGetMyProf()); // 自分のプロフィールを取得するアクション
+            router.push("/main-page");
+          }
+        }
+        await dispatch(fetchCredEnd()); // ローディング状態を終了するアクション
+        await dispatch(resetOpenSignIn()); // ログイン画面を閉じるアクション
+      }}
+      // フォームのバリデーションスキーマを設定。emailは必須で、正しいフォーマットであることが要求。passwordも必須で、最小文字数は4と設定。
+      validationSchema={Yup.object().shape({
+        email: Yup.string()
+          .email("email format is wrong")
+          .required("email is must"),
+        password: Yup.string().required("password is must").min(4),
+      })}
+    >
+      {({
+        handleSubmit, // フォームが提出された時に呼び出される関数
+        handleChange, // フォーム内のinput要素の値が変更された時に呼び出される関数
+        handleBlur, // フォームのフィールドがフォーカスを失った時に呼び出される関数
+        values, // フォームの現在の値の状態オブジェクト
+        errors, // フォームの現在のエラーメッセージの状態オブジェクト
+        touched, // フォームの各フィールドが一度でも触れられたかの状態オブジェクト
+        isValid, // フォームがバリデーションに合格しているかのブール値
+      }) => (
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <input type="hidden" name="remember" value="true" />
+          <div className="rounded-md shadow-sm -space-y-px">
+            <h1 className="font-playball font-normal text-center text-2xl">
+              グルグラム
+            </h1>
+            <br />
+            {/* プログレスバー*/}
+            <div className="my-4 flex justify-center">
+              {isLoadingAuth && ( //ローディング状態なら
+                <div role="status">
+                  <svg
+                    aria-hidden="true"
+                    className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                    viewBox="0 0 100 101"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    ログイン
-                  </button>
-                  <br />
-                  <br />
-                  <span
-                    className="text-blue-500 text-center cursor-pointer"
-                    onClick={async () => {
-                      await dispatch(resetOpenSignIn());
-                      await dispatch(setOpenSignUp());
-                    }}
-                  >
-                    アカウントをお持ちでない ?
-                  </span>
+                    <path
+                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                      fill="currentFill"
+                    />
+                  </svg>
+                  <span className="sr-only">Loading...</span>
                 </div>
-              </form>
+              )}
             </div>
-          )}
-        </Formik>
-      </Modal>
-    </>
+            <div>
+              <input
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Emailを入力"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.email && touched.email && <div>{errors.email}</div>}
+            </div>
+            <br />
+            <div>
+              <input
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="パスワードを入力"
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.password && touched.password && (
+                <div>{errors.password}</div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center">
+            <div className="text-sm">
+              <span
+                onClick={() => setIsLogin(!isLogin)}
+                className="cursor-pointer font-medium text-blue hover:text-indigo-500"
+              >
+                {isLogin
+                  ? "まだアカウントを作っていない場合はこちら"
+                  : "ログインはこちら"}
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              disabled={!isValid}
+            >
+              {isLogin ? "ログイン" : "新規作成"}
+            </button>
+          </div>
+        </form>
+      )}
+    </Formik>
   );
 };
 
