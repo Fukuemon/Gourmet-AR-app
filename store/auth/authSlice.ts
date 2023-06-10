@@ -1,27 +1,23 @@
-/*createSlice を使って認証官家のSliceを作っていく */
+// Redux Toolkitと必要な関数や型をインポート
 import { createSlice, createAsyncThunk, isAction } from '@reduxjs/toolkit';
-import { RootState } from '../store'
-import axios from 'axios';
-import { PROPS_AUTHEN, PROPS_NICKNAME, PROPS_PROFILE } from '../types';
+import { RootState } from '../store' // ストアのルートステートをインポートします
+import axios from 'axios'; // 非同期リクエストのためのaxiosをインポートします
+import { PROPS_AUTHEN, PROPS_NICKNAME, PROPS_PROFILE } from '../types'; // 必要なプロパティの型をインポート
 
-
-
-//emailとpasswordを元にJWTトークンを取得する非同期関数
-export const fetchAsyncLogin = createAsyncThunk( 
-  "auth/post", // アクションタイプ 
-  async (authen: PROPS_AUTHEN) => { // ペイロードクリエーター関数 引数としてauthenを受け取る
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_RESTAPI_URL}authen/jwt/create`, authen, { // axiosを用いた非同期リクエスト
+// 非同期処理でJWTトークンを取得するための関数を定義
+export const fetchAsyncLogin = createAsyncThunk(
+  "auth/post", // アクションのタイプを定義します
+  async (authen: PROPS_AUTHEN) => { // authenを引数に取るペイロードクリエーター関数を定義
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_RESTAPI_URL}authen/jwt/create`, authen, {
       headers: {
-        "Content-Type": "application/json", // リクエストのヘッダー
+        "Content-Type": "application/json", // リクエストのContent-Typeを定義
       },
     });
-    return res.data; // 成功した場合、レスポンスのデータ部分がReduxのstoreに保存される
+    return res.data; // リクエストの結果を返す
   }
 );
 
-/**emailとpassを元に新規ユーザー作成を行う関数
- * 新しく作るユーザーのemailとpassをreact側から受け取るようにする
-*/
+// 新規ユーザー登録を行うための非同期処理を定義
 export const fetchAsyncRegister = createAsyncThunk(
   "auth/register",
   async (auth: PROPS_AUTHEN) => {
@@ -30,25 +26,25 @@ export const fetchAsyncRegister = createAsyncThunk(
         "Content-Type": "application/json",
       },
     });
-    return res.data;
+    return res.data; // 登録結果を返
   }
 )
 
-/**プロフィールを新規で作る関数*/
+// プロフィールを新規作成するための非同期処理を定義
 export const fetchAsyncCreateProf = createAsyncThunk(
   "profile/post",
   async (nickName: PROPS_NICKNAME) => {
     const res = await axios.post(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/profile/`, nickName, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `JWT ${localStorage.localJWT}`, //この関数はjwtの認証を通らないといけない
+        Authorization: `JWT ${localStorage.localJWT}`, // JWT認証が必要
       },
     });
-    return res.data;
+    return res.data; // プロフィール作成結果を返
   }
 )
 
-/**プロフィールを編集する関数 */
+// プロフィールを編集するための非同期処理を定義
 export const fetchAsyncUpdateProf = createAsyncThunk(
   "profile/put",
   async (profile: PROPS_PROFILE) => {
@@ -61,37 +57,38 @@ export const fetchAsyncUpdateProf = createAsyncThunk(
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `JWT ${localStorage.localJWT}`,
+          Authorization: `JWT ${localStorage.localJWT}`, // JWT認証が必要
         },
       }
     );
-    return res.data
+    return res.data; // プロフィール編集結果を返
   }
 )
 
-/**ログインしてるユーザーの自身のプロフィールを取得する関数 */
+// ログインしているユーザー自身のプロフィールを取得するための非同期処理を定義
 export const fetchAsyncGetMyProf = createAsyncThunk("profile/getMyProf", async () => {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/myprofile/`, {
     headers: {
-      Authorization: `JWT ${localStorage.localJWT}`,
+      Authorization: `JWT ${localStorage.localJWT}`, // JWT認証が必要
     },
   });
-  return res.data[0];
+  return res.data[0]; // 最初のプロフィールデータを返
 });
 
-/**存在するプロフィールの一覧を取得 */
+// プロフィール一覧を取得するための非同期処理を定義
 export const fetchAsyncGetProfs = createAsyncThunk("profile/getProfs", async () => {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/profile/`, {
     headers: {
-      Authorization: `JWT ${localStorage.localJWT}`,
+      Authorization: `JWT ${localStorage.localJWT}`, // JWT認証が必要
     },
   });
-  return res.data;
+  return res.data; // プロフィールデータを返
 });
 
+// authのsliceを作成
 export const authSlice = createSlice({
-  name: 'auth',
-  initialState: {
+  name: 'auth', // sliceの名前を定義
+  initialState: { // 初期状態を設定
     openSignIn: true,
     openSignUp: false,
     openProfile: false,
@@ -113,59 +110,60 @@ export const authSlice = createSlice({
       },
     ],
   },
-  reducers: {
+  reducers: { // 各種reducerを定義
     fetchCredStart(state) {
-      state.isLoadingAuth = true;
+      state.isLoadingAuth = true; // 認証のロード状態をtrueに
     },
     fetchCredEnd(state) {
-      state.isLoadingAuth = false;
+      state.isLoadingAuth = false; // 認証のロード状態をfalseに
     },
     setOpenSignIn(state) {
-      state.openSignIn = true;
+      state.openSignIn = true; // ログイン画面を表示
     },
     resetOpenSignIn(state) {
-      state.openSignIn = false;
+      state.openSignIn = false; // ログイン画面を非表示に
     },
     setOpenSignUp(state) {
-      state.openSignUp = true;
+      state.openSignUp = true; // 登録画面を表示
     },
     resetOpenSignUp(state) {
-      state.openSignUp = false;
+      state.openSignUp = false; // 登録画面を非表示に
     },
     setOpenProfile(state) {
-      state.openProfile = true;
+      state.openProfile = true; // プロフィール画面を表示
     },
     resetOpenProfile(state) {
-      state.openProfile = false;
+      state.openProfile = false; // プロフィール画面を非表示に
     },
     editNickName(state, action) {
-      state.myprofile.nickName = action.payload;
+      state.myprofile.nickName = action.payload; // ニックネームを更新
     },
   },
 
-  //extra Reducer
+  // 非同期処理の結果を元にstateを更新するextraReducerを定義
   extraReducers: (builder) => {
     builder.addCase(fetchAsyncLogin.fulfilled, (state, action) => {
-      localStorage.setItem("localJWT", action.payload.access);
+      localStorage.setItem("localJWT", action.payload.access); // JWTをlocalStorageに保存
     });
     builder.addCase(fetchAsyncCreateProf.fulfilled, (state, action) => {
-      state.myprofile = action.payload;
+      state.myprofile = action.payload; // プロフィールを更新
     });
     builder.addCase(fetchAsyncGetMyProf.fulfilled, (state, action) => {
-      state.myprofile = action.payload;
+      state.myprofile = action.payload; // プロフィールを更新
     });
     builder.addCase(fetchAsyncGetProfs.fulfilled, (state, action) => {
-      state.profiles = action.payload;
+      state.profiles = action.payload; // プロフィール一覧を更新
     });
     builder.addCase(fetchAsyncUpdateProf.fulfilled, (state, action) => {
-      state.myprofile = action.payload;
+      state.myprofile = action.payload; // プロフィールを更新
       state.profiles = state.profiles.map((prof) =>
-      prof.id === action.payload.id ? action.payload : prof)
+      prof.id === action.payload.id ? action.payload : prof) // プロフィール一覧の該当のプロフィールを更新
     })
 
   },
 });
 
+// action creatorをエクスポート
 export const {
   fetchCredStart, 
   fetchCredEnd, 
@@ -178,14 +176,13 @@ export const {
   editNickName  
 } = authSlice.actions;
 
-export const selectIsLoadingAuth = (state: RootState) =>
-  state.auth.isLoadingAuth; //authはstoreのreducerの名前と一致させる
-
+// 各stateの値を取得するためのセレクター関数を定義
+export const selectIsLoadingAuth = (state: RootState) => state.auth.isLoadingAuth;
 export const selectOpenSignIn = (state: RootState) => state.auth.openSignIn;
 export const selectOpenSignUp = (state: RootState) => state.auth.openSignUp;
 export const selectOpenProfile = (state: RootState) => state.auth.openProfile;
 export const selectProfile = (state: RootState) => state.auth.myprofile;
 export const selectProfiles = (state: RootState) => state.auth.profiles;
 
-
+// reducerをデフォルトでエクスポート
 export default authSlice.reducer;
