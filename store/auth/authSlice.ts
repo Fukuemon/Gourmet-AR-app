@@ -1,5 +1,5 @@
 // Redux Toolkitと必要な関数や型をインポート
-import { createSlice, createAsyncThunk, isAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store' // ストアのルートステートをインポートします
 import axios from 'axios'; // 非同期リクエストのためのaxiosをインポートします
 import { PROPS_AUTHEN, PROPS_NICKNAME, PROPS_PROFILE } from '../types'; // 必要なプロパティの型をインポート

@@ -61,8 +61,8 @@ const Auth: React.FC = () => {
       validationSchema={Yup.object().shape({
         email: Yup.string()
           .email("email format is wrong")
-          .required("email is must"),
-        password: Yup.string().required("password is must").min(4),
+          .required("emailを入力して下さい"),
+        password: Yup.string().required("パスワードを入力して下さい").min(4),
       })}
     >
       {({
@@ -74,20 +74,20 @@ const Auth: React.FC = () => {
         touched, // フォームの各フィールドが一度でも触れられたかの状態オブジェクト
         isValid, // フォームがバリデーションに合格しているかのブール値
       }) => (
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <input type="hidden" name="remember" value="true" />
-          <div className="rounded-md shadow-sm -space-y-px">
-            <h1 className="font-playball font-normal text-center text-2xl">
-              グルグラム
-            </h1>
-            <br />
+        <div className="flex justify-center items-center flex-col w-screen min-h-screen shadow">
+          <div className="w-64">
+            <div className="rounded-md shadow-sm -space-y-px">
+              <h1 className="mt-8 font-playball font-normal text-center text-2xl">
+                {isLogin ? "ログイン" : "新規アカウント作成"}
+              </h1>
+            </div>
             {/* プログレスバー*/}
-            <div className="my-4 flex justify-center">
-              {isLoadingAuth && ( //ローディング状態なら
+            <div className="flex justify-center items-center">
+              {isLoadingAuth && (
                 <div role="status">
                   <svg
                     aria-hidden="true"
-                    className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                    className="animate-spin h-8 w-8 text-gray-200 dark:text-gray-600 fill-blue-600"
                     viewBox="0 0 100 101"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -105,19 +105,23 @@ const Auth: React.FC = () => {
                 </div>
               )}
             </div>
+          </div>
+          <form className="p-8" onSubmit={handleSubmit}>
             <div>
               <input
                 name="email"
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Emailを入力"
                 value={values.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.email && touched.email && <div>{errors.email}</div>}
+              {errors.email && touched.email && (
+                <div className="text-center text-red-500">{errors.email}</div>
+              )}
             </div>
             <br />
             <div>
@@ -126,41 +130,43 @@ const Auth: React.FC = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="パスワードを入力"
                 value={values.password}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.password && touched.password && (
-                <div>{errors.password}</div>
+                <div className="text-center text-red-500">
+                  {errors.password}
+                </div>
               )}
             </div>
-          </div>
 
-          <div className="flex items-center justify-center">
-            <div className="text-sm">
-              <span
-                onClick={() => setIsLogin(!isLogin)}
-                className="cursor-pointer font-medium text-blue hover:text-indigo-500"
-              >
-                {isLogin
-                  ? "まだアカウントを作っていない場合はこちら"
-                  : "ログインはこちら"}
-              </span>
+            <div className="flex items-center justify-center">
+              <div className="mt-4 mb-4 text-sm">
+                <span
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="cursor-pointer font-medium text-blue hover:text-indigo-500"
+                >
+                  {isLogin
+                    ? "まだアカウントを作っていない場合はこちら"
+                    : "ログインはこちら"}
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              disabled={!isValid}
-            >
-              {isLogin ? "ログイン" : "新規作成"}
-            </button>
-          </div>
-        </form>
+            <div>
+              <button
+                type="submit"
+                className="flex w-full justify-center rounded-md bg-yellow-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                disabled={!isValid}
+              >
+                {isLogin ? "ログイン" : "新規作成"}
+              </button>
+            </div>
+          </form>
+        </div>
       )}
     </Formik>
   );
