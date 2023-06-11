@@ -21,25 +21,27 @@ export interface PROPS_NICKNAME {
 
 /*postSlice.ts */
 export interface PROPS_NEWPOST {
-    restaurant: string;
-    category: string;
+    restaurant: number; // restaurantのid
+    category: number[]; // multiple category ids
     menu_item: string;
     menu_item_photo: File | null;
     menu_item_model: File | null;
-    review_text: string
+    review_text: string;
     score: number;
     price: number;
 }
 
+
 export interface PROPS_RESTAURANT {
     name: string;
     location: string;
-    post: number[]; //紐づいてる投稿のidを格納
+    posts: number[]; // associated post ids
 }
+
 
 export interface PROPS_CATEGORY {
     name: string;
-    post: number[] //紐づいてる投稿のidを格納
+    posts: number[] // associated post ids
 }
 
 /*Post.tsx ポストコンポーネントで使用する型*/
@@ -52,6 +54,5 @@ export interface PROPS_POST {
     menu_item: string
     imageUrl: string;
     modelUrl: string;
-
 
 }
