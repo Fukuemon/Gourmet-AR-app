@@ -5,20 +5,46 @@ import axios from 'axios'; // 非同期リクエストのためのaxiosをイン
 import { PROPS_NEWPOST, PROPS_RESTAURANT, PROPS_CATEGORY  } from '../types'; // 必要なプロパティの型をインポート
 
 const apiUrlPost = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post/`;
+const apiUrlPostList = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_list`;
+const apiUrlPostDetail = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_detail`;
 const apiUrlRestaurant = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/restaurant/`;
 const apiUrlCategory = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/category/`;
 
 /*非同期関数*/
-//投稿の一覧を取得
-export const fetchAsyncGetPosts = createAsyncThunk("post/get", async () => {
-    const res = await axios.get(apiUrlPost, {
-        headers: {
-            Authorization: `JWT ${localStorage.localJWT}`,
-        },
-    });
-    return res.data; //投稿の配列を取得する
+//投稿の一覧を取得する関数 (非同期で動作し、投稿の配列を返す) 
+export const getPosts = async () => {
+  const res = await axios.get(apiUrlPostList, {
+    headers: {
+        "Content-Type": "application/json"
+    },
+  });
+  return res.data;
+};
+
+//投稿の一覧を取得(action)
+export const fetchAsyncGetPosts = createAsyncThunk("posts/get", async () => {
+    const res = await getPosts();
+    return res;
+  });
     //その後で、extrareducerで配列のデータを下のpostsの中のstateに格納する
-});
+
+
+//投稿詳細を取得する関数
+export const getPostDetail = async () => {
+    const res = await axios.get(apiUrlPostDetail, {
+      headers: {
+          "Content-Type": "application/json"
+      },
+    });
+    return res.data;
+  };
+
+
+//投稿詳細を取得(action)
+export const fetchAsyncGetPostDetail = createAsyncThunk("post/get", async () => {
+    const res = await getPostDetail();
+    return res;
+})
 
 //新規投稿作成
 export const fetchAsyncNewPost = createAsyncThunk(
@@ -214,7 +240,7 @@ export const {
 } = postSlice.actions;
 
 // 各stateの値を取得するためのセレクター関数を定義
-export const selectIsLodingPost = (state: RootState) =>
+export const selectIsLoadingPost = (state: RootState) =>
     state.post.isLoadingPost;
 export const selectOpenNewPost = (state: RootState) =>state.post.openNewPost;
 export const selectPosts = (state: RootState) => state.post.posts;
