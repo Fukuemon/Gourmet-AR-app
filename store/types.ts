@@ -46,13 +46,15 @@ export interface PROPS_CATEGORY {
 
 /*Post.tsx ポストコンポーネントで使用する型*/
 export interface PROPS_POST {
-    postId: number; //投稿のid
-    loginId: number; //ログインしているユーザーのid
-    author: number; //投稿をしたユーザーのid
-    restaurant: string; //レストランのid
-    category: string; //カテゴリのid
-    menu_item: string
-    imageUrl: string;
-    modelUrl: string;
-
+        id: number; //投稿のid
+        loginId: number; //ログインしているユーザーのid
+        author: number; //投稿をしたユーザーのid
+        restaurant: string; //レストランのid
+        category: string; //カテゴリのid
+        menu_item: string
+        menu_item_photo: string;
+        menu_item_model: string;
+        review_text: string;
+        score: number;
+        price: number;
 }
