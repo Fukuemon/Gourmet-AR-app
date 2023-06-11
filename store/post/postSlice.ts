@@ -46,7 +46,7 @@ export const fetchAsyncNewPost = createAsyncThunk(
 );
 
 //レストランの一覧を取得
-export const fetchAsyncGeRestaurant = createAsyncThunk("restaurant/get", async () => {
+export const fetchAsyncGetRestaurant = createAsyncThunk("restaurant/get", async () => {
     const res = await axios.get(apiUrlRestaurant, {
         headers: {
             Authorization: `JWT ${localStorage.localJWT}`,
@@ -98,7 +98,6 @@ export const fetchAsyncNewCategory = createAsyncThunk(
 );
 
 
-
 // authのsliceを作成
 export const postSlice = createSlice({
   name: 'post', // sliceの名前を定義
@@ -120,7 +119,7 @@ export const postSlice = createSlice({
             review_text: ""
         },
     ],
-    restaurant: [
+    restaurants: [
         {
             id: 0,
             name: "",
@@ -128,7 +127,7 @@ export const postSlice = createSlice({
             post: []
         },
     ],
-    category: [
+    categories: [
         {
             id: 0,
             name: "",
@@ -144,57 +143,83 @@ export const postSlice = createSlice({
     fetchPostEnd(state) {
         state.isLoadingPost = false;
     },
-    setOpenPost(state) {
+    setOpenNewPost(state) {
         state.openNewPost = true;
     },
-    resetOpenPost(state) {
+    resetOpenNewPost(state) {
         state.openNewPost = false;
     },
   },
 
   // 非同期処理の結果を元にstateを更新するextraReducerを定義
   extraReducers: (builder) => {
-    builder.addCase(fetchAsyncLogin.fulfilled, (state, action) => {
-      localStorage.setItem("localJWT", action.payload.access); // JWTをlocalStorageに保存
+    //新規投稿一覧の取得が成功した場合
+    builder.addCase(fetchAsyncGetPosts.fulfilled, (state, action) => {
+        return {
+            ...state,
+            posts: action.payload //それらをpostsのstateに格納する
+        };
     });
-    builder.addCase(fetchAsyncCreateProf.fulfilled, (state, action) => {
-      state.myprofile = action.payload; // プロフィールを更新
-    });
-    builder.addCase(fetchAsyncGetMyProf.fulfilled, (state, action) => {
-      state.myprofile = action.payload; // プロフィールを更新
-    });
-    builder.addCase(fetchAsyncGetProfs.fulfilled, (state, action) => {
-      state.profiles = action.payload; // プロフィール一覧を更新
-    });
-    builder.addCase(fetchAsyncUpdateProf.fulfilled, (state, action) => {
-      state.myprofile = action.payload; // プロフィールを更新
-      state.profiles = state.profiles.map((prof) =>
-      prof.id === action.payload.id ? action.payload : prof) // プロフィール一覧の該当のプロフィールを更新
-    })
 
-  },
+    //新規投稿の作成が成功した場合
+    builder.addCase(fetchAsyncNewPost.fulfilled, (state, action) => {
+        return {
+            ...state,
+            //既存の投稿リストを展開して、その一番最後の要素に新規投稿の要素を足す
+            posts: [...state.posts, action.payload] 
+        };
+    });
+        // レストラン一覧の取得が成功した場合
+        builder.addCase(fetchAsyncGetRestaurant.fulfilled, (state, action) => {
+            return {
+                ...state,
+                restaurants: action.payload // レストランの配列をstateに格納する
+            };
+        });
+    
+        // 新規レストラン作成が成功した場合
+        builder.addCase(fetchAsyncNewRestaurant.fulfilled, (state, action) => {
+            return {
+                ...state,
+                // 既存のレストランリストに新規レストランを追加
+                restaurants: [...state.restaurants, action.payload]
+            };
+        });
+    
+        // カテゴリ一覧の取得が成功した場合
+        builder.addCase(fetchAsyncGetCategory.fulfilled, (state, action) => {
+            return {
+                ...state,
+                categories: action.payload // カテゴリの配列をstateに格納する
+            };
+        });
+    
+        // 新規カテゴリ作成が成功した場合
+        builder.addCase(fetchAsyncNewCategory.fulfilled, (state, action) => {
+            return {
+                ...state,
+                // 既存のカテゴリリストに新規カテゴリを追加
+                categories: [...state.categories, action.payload]
+            };
+        });
+    },
 });
 
 // action creatorをエクスポート
 export const {
-  fetchCredStart, 
-  fetchCredEnd, 
-  setOpenSignIn, 
-  resetOpenSignIn, 
-  setOpenSignUp, 
-  resetOpenSignUp, 
-  setOpenProfile, 
-  resetOpenProfile, 
-  editNickName  
-} = authSlice.actions;
+    fetchPostStart,
+    fetchPostEnd,
+    setOpenNewPost,
+    resetOpenNewPost,
+} = postSlice.actions;
 
 // 各stateの値を取得するためのセレクター関数を定義
-export const selectIsLoadingAuth = (state: RootState) => state.auth.isLoadingAuth;
-export const selectOpenSignIn = (state: RootState) => state.auth.openSignIn;
-export const selectOpenSignUp = (state: RootState) => state.auth.openSignUp;
-export const selectOpenProfile = (state: RootState) => state.auth.openProfile;
-export const selectProfile = (state: RootState) => state.auth.myprofile;
-export const selectProfiles = (state: RootState) => state.auth.profiles;
+export const selectIsLodingPost = (state: RootState) =>
+    state.post.isLoadingPost;
+export const selectOpenNewPost = (state: RootState) =>state.post.openNewPost;
+export const selectPosts = (state: RootState) => state.post.posts;
+export const selectRestaurants = (state: RootState) => state.post.restaurants;
+export const selectCategories = (state: RootState) => state.post.categories;
 
 // reducerをデフォルトでエクスポート
-export default authSlice.reducer;
+export default postSlice.reducer;
