@@ -1,17 +1,23 @@
 import { useEffect } from "react";
-import { PROPS_POST } from "../../../store/types";
-import { getPostDetail, getPostIds } from "../../../store/post/postSlice";
+import { PROPS_POST } from "../../store/types";
+import { getPostDetail, getPostIds } from "../../store/post/postSlice";
 import { NextPage } from "next";
 import { GetStaticPropsContext } from "next";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import PostDetail from "../../../components/PostDetail";
+import PostDetail from "../../components/PostDetail";
+import useSWR from "swr";
+import {
+  resetOpenSignIn,
+  selectIsLoadingAuth,
+  selectProfile,
+} from "../../store/auth/authSlice.ts";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-const DetailPost = ({ staticPosts, id }) => {
-  const dispatch = useDispatch;
-  const router = useRouter;
+const DetailPost = ({ staticPost, id }) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const user = useSelector(selectProfile);
 
   const { data: post, mutate } = useSWR(
@@ -25,8 +31,6 @@ const DetailPost = ({ staticPosts, id }) => {
     const fetchGetPost = async () => {
       if (localStorage.localJWT) {
         dispatch(resetOpenSignIn());
-        const result = await dispatch(fetchAsyncGetPosts());
-        await dispatch(fetchAsyncGetRestaurant());
       } else {
         router.push("/");
       }
@@ -42,25 +46,24 @@ const DetailPost = ({ staticPosts, id }) => {
   return (
     <>
       <div className="p-4 w-full max-w-2xl mx-auto">
-        {posts &&
-          posts.map((post) => (
-            <PostDetail
-              key={post.id}
-              id={post.id}
-              nickName={user.nickName}
-              created_on={post.created_on}
-              loginId={user.id}
-              author={post.author}
-              restaurant={post.restaurant}
-              category={post.category}
-              menu_item={post.menu_item}
-              menu_item_photo={post.menu_item_photo}
-              menu_item_model={post.menu_item_model}
-              review_text={post.review_text}
-              score={post.score}
-              price={post.price}
-            />
-          ))}
+        {post && (
+          <PostDetail
+            key={post.id}
+            id={post.id}
+            nickName={user.nickName}
+            created_on={post.created_on}
+            loginId={user.id}
+            author={post.author}
+            restaurant={post.restaurant}
+            category={post.category}
+            menu_item={post.menu_item}
+            menu_item_photo={post.menu_item_photo}
+            menu_item_model={post.menu_item_model}
+            review_text={post.review_text}
+            score={post.score}
+            price={post.price}
+          />
+        )}
       </div>
     </>
   );

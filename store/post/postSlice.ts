@@ -6,7 +6,6 @@ import { PROPS_NEWPOST, PROPS_RESTAURANT, PROPS_CATEGORY, PROPS_POST  } from '..
 
 const apiUrlPost = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post/`;
 const apiUrlPostList = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_list`;
-const apiUrlPostDetail = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_detail/$(id)/`;
 const apiUrlRestaurant = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/restaurant/`;
 const apiUrlCategory = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/category/`;
 
@@ -30,7 +29,7 @@ export const fetchAsyncGetPosts = createAsyncThunk("posts/get", async () => {
 
 
 //投稿idを取得する関数
-export const getPostIds = async () => {
+export const getPostIds = async (id: string) => {
     const res = await axios.get(apiUrlPostList, {
         headers: {
             "Context-Type": "application/json"
@@ -50,7 +49,7 @@ export const getPostIds = async () => {
 
 //投稿詳細を取得する関数
 export const getPostDetail = async (id: PROPS_POST) => {
-    const res = await axios.get(apiUrlPostDetail, {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_detail/${id}/`, {
       headers: {
           "Content-Type": "application/json"
       },
