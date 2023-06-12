@@ -3,11 +3,14 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store' // ストアのルートステートをインポートします
 import axios from 'axios'; // 非同期リクエストのためのaxiosをインポートします
 import { PROPS_NEWPOST, PROPS_RESTAURANT, PROPS_CATEGORY, PROPS_POST  } from '../types'; // 必要なプロパティの型をインポート
+import Cookie from 'universal-cookie';
 
 const apiUrlPost = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post/`;
 const apiUrlPostList = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_list`;
 const apiUrlRestaurant = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/restaurant/`;
 const apiUrlCategory = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/category/`;
+
+const cookie = new Cookie();
 
 /*非同期関数*/
 //投稿の一覧を取得する関数 (非同期で動作し、投稿の配列を返す) 
@@ -75,7 +78,7 @@ export const fetchAsyncNewPost = createAsyncThunk(
         const res = await axios.post(apiUrlPost, uploadData, {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `JWT ${localStorage.localJWT}`,
+                Authorization: `JWT ${cookie.get("access_token")}`,
             }
         });
         return res.data;
@@ -86,7 +89,7 @@ export const fetchAsyncNewPost = createAsyncThunk(
 export const fetchAsyncGetRestaurant = createAsyncThunk("restaurant/get", async () => {
     const res = await axios.get(apiUrlRestaurant, {
         headers: {
-            Authorization: `JWT ${localStorage.localJWT}`,
+            Authorization: `JWT ${cookie.get("access_token")}`,
         },
     });
     return res.data; //レストランの配列を取得する
@@ -100,7 +103,7 @@ export const fetchAsyncNewRestaurant = createAsyncThunk(
         const res = await axios.post(apiUrlRestaurant, restaurant, {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `JWT ${localStorage.localJWT}`,
+                Authorization: `JWT ${cookie.get("access_token")}`,
             },
         });
         return res.data;
@@ -112,7 +115,7 @@ export const fetchAsyncNewRestaurant = createAsyncThunk(
 export const fetchAsyncGetCategory = createAsyncThunk("category/get", async () => {
     const res = await axios.get(apiUrlCategory, {
         headers: {
-            Authorization: `JWT ${localStorage.localJWT}`,
+            Authorization: `JWT ${cookie.get("access_token")}`,
         },
     });
     return res.data; //レストランの配列を取得する
@@ -127,7 +130,7 @@ export const fetchAsyncNewCategory = createAsyncThunk(
         const res = await axios.post(apiUrlCategory, category, {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `JWT ${localStorage.localJWT}`,
+                Authorization: `JWT ${cookie.get("access_token")}`,
             },
         });
         return res.data;

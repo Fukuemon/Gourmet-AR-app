@@ -11,6 +11,9 @@ import {
 import { useRouter } from "next/router";
 import { AppDispatch } from "../store/store";
 import { FC, MouseEventHandler, useEffect } from "react";
+import Cookie from "universal-cookie";
+
+const cookie = new Cookie();
 
 interface NavbarProps {
   title: string;
@@ -29,7 +32,7 @@ const Navbar: FC<NavbarProps> = ({ title }) => {
   };
   useEffect(() => {
     const fetchBootLoader = async () => {
-      if (localStorage.localJWT) {
+      if (cookie.get("access_token")) {
         //jwtトークンがあるかどうか
         dispatch(resetOpenSignIn()); //ある場合：SignInのstateを更新
         const result = await dispatch(fetchAsyncGetMyProf()); //ログインしてるユーザーのプロフィール情報を取得

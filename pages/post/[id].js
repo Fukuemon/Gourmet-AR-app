@@ -10,6 +10,9 @@ import {
   selectIsLoadingAuth,
   selectProfile,
 } from "../../store/auth/authSlice.ts";
+import Cookie from "universal-cookie";
+
+const cookie = new Cookie();
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const DetailPost = ({ staticPost, id }) => {
@@ -26,7 +29,7 @@ const DetailPost = ({ staticPost, id }) => {
   );
   useEffect(() => {
     const fetchGetPost = async () => {
-      if (localStorage.localJWT) {
+      if (cookie.get("access_token")) {
         dispatch(resetOpenSignIn());
       } else {
         router.push("/");
