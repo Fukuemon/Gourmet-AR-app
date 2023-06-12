@@ -3,6 +3,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store' // ストアのルートステートをインポートします
 import axios from 'axios'; // 非同期リクエストのためのaxiosをインポートします
 import { PROPS_AUTHEN, PROPS_NICKNAME, PROPS_PROFILE } from '../types'; // 必要なプロパティの型をインポート
+import Cookie from 'universal-cookie';
+
+const cookie = new Cookie();
 
 // 非同期処理でJWTトークンを取得するための関数を定義
 export const fetchAsyncLogin = createAsyncThunk(
@@ -37,7 +40,7 @@ export const fetchAsyncCreateProf = createAsyncThunk(
     const res = await axios.post(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/profile/`, nickName, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `JWT ${localStorage.localJWT}`, // JWT認証が必要
+        Authorization: `JWT ${cookie.get('access_token')}`, // JWT認証が必要
       },
     });
     return res.data; // プロフィール作成結果を返
@@ -57,7 +60,7 @@ export const fetchAsyncUpdateProf = createAsyncThunk(
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `JWT ${localStorage.localJWT}`, // JWT認証が必要
+          Authorization: `JWT ${cookie.get("access_token")}`, // JWT認証が必要
         },
       }
     );
@@ -69,7 +72,7 @@ export const fetchAsyncUpdateProf = createAsyncThunk(
 export const fetchAsyncGetMyProf = createAsyncThunk("profile/getMyProf", async () => {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/myprofile/`, {
     headers: {
-      Authorization: `JWT ${localStorage.localJWT}`, // JWT認証が必要
+      Authorization: `JWT ${cookie.get("access_token")}`, // JWT認証が必要
     },
   });
   return res.data[0]; // 最初のプロフィールデータを返
@@ -79,7 +82,7 @@ export const fetchAsyncGetMyProf = createAsyncThunk("profile/getMyProf", async (
 export const fetchAsyncGetProfs = createAsyncThunk("profile/getProfs", async () => {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/profile/`, {
     headers: {
-      Authorization: `JWT ${localStorage.localJWT}`, // JWT認証が必要
+      Authorization: `JWT ${cookie.get("access_token")}`, // JWT認証が必要
     },
   });
   return res.data; // プロフィールデータを返
@@ -143,7 +146,8 @@ export const authSlice = createSlice({
   // 非同期処理の結果を元にstateを更新するextraReducerを定義
   extraReducers: (builder) => {
     builder.addCase(fetchAsyncLogin.fulfilled, (state, action) => {
-      localStorage.setItem("localJWT", action.payload.access); // JWTをlocalStorageに保存
+      const options = { path: "/" }
+      cookie.set("access_token", action.payload.access, options);// JWTをlocalStorageに保存
     });
     builder.addCase(fetchAsyncCreateProf.fulfilled, (state, action) => {
       state.myprofile = action.payload; // プロフィールを更新

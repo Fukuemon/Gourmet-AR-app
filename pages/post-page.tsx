@@ -25,6 +25,9 @@ import {
   selectProfile,
 } from "../store/auth/authSlice";
 import dynamic from "next/dynamic";
+import Cookie from "universal-cookie";
+
+const cookie = new Cookie();
 
 const DynamicModelViewer = dynamic(() => import("../components/ModelViewer"), {
   ssr: false,
@@ -45,8 +48,9 @@ const Postpage: NextPage<{ staticPosts: PROPS_POST[] }> = ({ staticPosts }) => {
     }
   );
   useEffect(() => {
+    console.log(cookie);
     const fetchGetPost = async () => {
-      if (localStorage.localJWT) {
+      if (cookie.get("access_token")) {
         dispatch(resetOpenSignIn());
         const result = await dispatch(fetchAsyncGetPosts());
         await dispatch(fetchAsyncGetRestaurant());
@@ -83,9 +87,6 @@ const Postpage: NextPage<{ staticPosts: PROPS_POST[] }> = ({ staticPosts }) => {
                 score={post.score}
                 price={post.price}
               />
-              <div className="w-full">
-                <DynamicModelViewer src={post.menu_item_model} />
-              </div>
             </div>
           ))}
       </div>

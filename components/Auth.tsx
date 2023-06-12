@@ -51,7 +51,7 @@ const Auth: React.FC = () => {
             await dispatch(fetchAsyncCreateProf({ nickName: "anonymous" })); // プロフィールを作成するアクション
             await dispatch(fetchAsyncGetProfs()); // 全てのプロフィールを取得するアクション
             await dispatch(fetchAsyncGetMyProf()); // 自分のプロフィールを取得するアクション
-            router.push("/main-page");
+            router.push("/post-page");
           }
         }
         await dispatch(fetchCredEnd()); // ローディング状態を終了するアクション
