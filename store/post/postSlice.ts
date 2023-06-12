@@ -2,11 +2,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store' // ストアのルートステートをインポートします
 import axios from 'axios'; // 非同期リクエストのためのaxiosをインポートします
-import { PROPS_NEWPOST, PROPS_RESTAURANT, PROPS_CATEGORY  } from '../types'; // 必要なプロパティの型をインポート
+import { PROPS_NEWPOST, PROPS_RESTAURANT, PROPS_CATEGORY, PROPS_POST  } from '../types'; // 必要なプロパティの型をインポート
 
 const apiUrlPost = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post/`;
 const apiUrlPostList = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_list`;
-const apiUrlPostDetail = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_detail`;
+const apiUrlPostDetail = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_detail/$(id)/`;
 const apiUrlRestaurant = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/restaurant/`;
 const apiUrlCategory = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/category/`;
 
@@ -29,8 +29,27 @@ export const fetchAsyncGetPosts = createAsyncThunk("posts/get", async () => {
     //その後で、extrareducerで配列のデータを下のpostsの中のstateに格納する
 
 
+//投稿idを取得する関数
+export const getPostIds = async () => {
+    const res = await axios.get(apiUrlPostList, {
+        headers: {
+            "Context-Type": "application/json"
+        },
+    })
+    const posts = await res.data;
+
+    return posts.map((post:PROPS_POST) => {
+        return {
+            params: {
+                id: String(post.id),
+            },
+        };
+    });
+}
+
+
 //投稿詳細を取得する関数
-export const getPostDetail = async () => {
+export const getPostDetail = async (id: PROPS_POST) => {
     const res = await axios.get(apiUrlPostDetail, {
       headers: {
           "Content-Type": "application/json"
@@ -38,13 +57,6 @@ export const getPostDetail = async () => {
     });
     return res.data;
   };
-
-
-//投稿詳細を取得(action)
-export const fetchAsyncGetPostDetail = createAsyncThunk("post/get", async () => {
-    const res = await getPostDetail();
-    return res;
-})
 
 //新規投稿作成
 export const fetchAsyncNewPost = createAsyncThunk(
