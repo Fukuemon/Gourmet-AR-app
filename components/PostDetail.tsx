@@ -1,6 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
 import { PROPS_POST } from "../store/types";
+import dynamic from "next/dynamic";
+
+const DynamicModelViewer = dynamic(() => import("../components/ModelViewer"), {
+  ssr: false,
+});
 
 const PostDetail: React.FC<PROPS_POST> = ({
   //propsとして投稿のデータを受け取る
@@ -45,9 +49,14 @@ const PostDetail: React.FC<PROPS_POST> = ({
         <div className="flex items-center mt-2">
           <div className="items_left">
             {menu_item_model && (
-              <p className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-                3D
-              </p>
+              <>
+                <p className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                  3D
+                </p>
+                <div className="w-full">
+                  <DynamicModelViewer src={menu_item_model} />
+                </div>
+              </>
             )}
           </div>
         </div>
