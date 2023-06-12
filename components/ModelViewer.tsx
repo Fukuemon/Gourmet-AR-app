@@ -1,4 +1,4 @@
-import React, { useEffect, FC } from "react";
+import React, { useEffect, FC, CSSProperties } from "react";
 
 interface ModelViewerProps {
   src: string;
@@ -16,6 +16,7 @@ declare global {
       alt?: string;
       ar?: boolean;
       scale?: string;
+      style?: React.CSSProperties;
       "auto-rotate"?: boolean;
       "camera-controls"?: boolean;
     }
@@ -23,11 +24,33 @@ declare global {
 }
 
 const ModelViewer: FC<ModelViewerProps> = ({ src }) => {
+  const [style, setStyle] = React.useState<CSSProperties>({});
   useEffect(() => {
     import("@google/model-viewer").catch(console.error);
   }, []);
+
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 600) {
+        setStyle({ width: "100%", height: "300px" });
+      } else if (window.innerWidth < 900) {
+        setStyle({ width: "100%", height: "600px" });
+      } else {
+        setStyle({ width: "100%", height: "800px" });
+      }
+    }
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <model-viewer
+      style={style}
       className="w-full h-full"
       src="/4ステーキコンボ.glb"
       auto-rotate

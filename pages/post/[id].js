@@ -61,8 +61,6 @@ const DetailPost = ({ staticPost, id }) => {
             price={post.price}
           />
         )}
-
-        {/* 3Dモデルが存在する場合にModelViewerをレンダリングします */}
       </div>
     </>
   );
