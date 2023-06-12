@@ -1,10 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import authReducer from "./auth/authSlice"
-
+import postReducer from "./post/postSlice"
 
 export const store = configureStore({
   reducer: {
     auth: authReducer, //Sliceのselectの部分のところと一致させる
+    post: postReducer,
   },
 });
 

@@ -30,10 +30,13 @@ const Navbar: FC<NavbarProps> = ({ title }) => {
   useEffect(() => {
     const fetchBootLoader = async () => {
       if (localStorage.localJWT) {
-        dispatch(resetOpenSignIn());
-        const result = await dispatch(fetchAsyncGetMyProf());
+        //jwtトークンがあるかどうか
+        dispatch(resetOpenSignIn()); //ある場合：SignInのstateを更新
+        const result = await dispatch(fetchAsyncGetMyProf()); //ログインしてるユーザーのプロフィール情報を取得
         if (fetchAsyncGetMyProf.rejected.match(result)) {
+          //切れてる場合
           dispatch(setOpenSignIn());
+          router.push("/"); //ログイン画面に遷移
           return null;
         }
         await dispatch(fetchAsyncGetProfs());
@@ -43,16 +46,16 @@ const Navbar: FC<NavbarProps> = ({ title }) => {
   }, [dispatch]);
 
   return (
-    <div className="navbar bg-base-100 border-b m-4">
+    <div className="navbar bg-yellow-50 border-b mb-4">
       <div className="navbar-start flex-1">
-        <a className="btn btn-ghost normal-case text-xl">グルグラ</a>
+        <a className="btn btn-ghost normal-case text-xl">{title}</a>
       </div>
       <div className="navbar-center">
         <a className="btn btn-ghost normal-case text-xl">{profile.nickName}</a>
       </div>
       <div className="dropdown dropdown-end">
         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-          <div className="w-10 rounded-full">
+          <div className="rounded-full">
             <img src={profile.img} alt="User Profile" />
           </div>
         </label>
