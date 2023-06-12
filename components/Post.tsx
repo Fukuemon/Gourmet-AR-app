@@ -4,7 +4,9 @@ import { PROPS_POST } from "../store/types";
 
 const Post: React.FC<PROPS_POST> = ({
   //propsとして投稿のデータを受け取る
+  nickName,
   id,
+  created_on,
   loginId,
   author,
   restaurant,
@@ -30,7 +32,8 @@ const Post: React.FC<PROPS_POST> = ({
       )}
       <div className="p-4">
         <h2 className="font-bold text-lg">{menu_item}</h2>
-        <div className="text-gray-700 mt-2">{review_text}</div>
+        <span className="text-gray-700 mt-2">投稿日：{created_on}</span>
+        <div className="text-gray-700 mt-2">投稿者：{nickName}</div>
         <div className="mt-3">
           <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
             {"¥" + price}
@@ -42,9 +45,16 @@ const Post: React.FC<PROPS_POST> = ({
         <div className="flex items-center mt-2">
           <Link href={`/post/${id}`}>
             <a className="text-indigo-500 hover:text-indigo-600 text-sm">
-              詳細を見る
+              詳細
             </a>
           </Link>
+          <div className="items_left">
+            {menu_item_model && (
+              <p className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                3D
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>

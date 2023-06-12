@@ -8,6 +8,7 @@ import Link from "next/link";
 import Post from "../components/Post";
 import useSWR from "swr";
 import { PROPS_POST } from "../store/types";
+import Layout from "../components/Layout";
 import {
   getPosts,
   selectPosts,
@@ -32,7 +33,7 @@ const Postpage: NextPage<{ staticPosts: PROPS_POST[] }> = ({ staticPosts }) => {
   const isLoadingPost = useSelector(selectIsLoadingAuth);
   const user = useSelector(selectProfile);
   const { data: posts, mutate } = useSWR(
-    `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post/`,
+    `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_list/`,
     fetcher,
     {
       fallbackData: staticPosts,
@@ -57,25 +58,29 @@ const Postpage: NextPage<{ staticPosts: PROPS_POST[] }> = ({ staticPosts }) => {
   }
 
   return (
-    <>
-      {posts &&
-        posts.map((post: PROPS_POST) => (
-          <Post
-            key={post.id}
-            id={post.id}
-            loginId={user.id}
-            author={post.author}
-            restaurant={post.restaurant}
-            category={post.category}
-            menu_item={post.menu_item}
-            menu_item_photo={post.menu_item_photo}
-            menu_item_model={post.menu_item_model}
-            review_text={post.review_text}
-            score={post.score}
-            price={post.price}
-          />
-        ))}
-    </>
+    <Layout title="PostList">
+      <div className="p-4 w-full max-w-2xl mx-auto">
+        {posts &&
+          posts.map((post: PROPS_POST) => (
+            <Post
+              key={post.id}
+              id={post.id}
+              nickName={user.nickName}
+              created_on={post.created_on}
+              loginId={user.id}
+              author={post.author}
+              restaurant={post.restaurant}
+              category={post.category}
+              menu_item={post.menu_item}
+              menu_item_photo={post.menu_item_photo}
+              menu_item_model={post.menu_item_model}
+              review_text={post.review_text}
+              score={post.score}
+              price={post.price}
+            />
+          ))}
+      </div>
+    </Layout>
   );
 };
 

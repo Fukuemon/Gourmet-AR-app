@@ -47,8 +47,9 @@ export interface PROPS_CATEGORY {
 /*Post.tsx ポストコンポーネントで使用する型*/
 export interface PROPS_POST {
         id: number; //投稿のid
+        created_on: string;
         loginId: number; //ログインしているユーザーのid
-        author: number; //投稿をしたユーザーのid
+        author: number; //投稿をしたユーザー
         restaurant: string; //レストランのid
         category: string; //カテゴリのid
         menu_item: string
@@ -57,4 +58,6 @@ export interface PROPS_POST {
         review_text: string;
         score: number;
         price: number;
+        nickName: string;
+
 }
