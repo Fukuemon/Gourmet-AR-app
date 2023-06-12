@@ -24,6 +24,11 @@ import {
   selectIsLoadingAuth,
   selectProfile,
 } from "../store/auth/authSlice";
+import dynamic from "next/dynamic";
+
+const DynamicModelViewer = dynamic(() => import("../components/ModelViewer"), {
+  ssr: false,
+});
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -62,22 +67,26 @@ const Postpage: NextPage<{ staticPosts: PROPS_POST[] }> = ({ staticPosts }) => {
       <div className="p-4 w-full max-w-2xl mx-auto">
         {posts &&
           posts.map((post: PROPS_POST) => (
-            <Post
-              key={post.id}
-              id={post.id}
-              nickName={user.nickName}
-              created_on={post.created_on}
-              loginId={user.id}
-              author={post.author}
-              restaurant={post.restaurant}
-              category={post.category}
-              menu_item={post.menu_item}
-              menu_item_photo={post.menu_item_photo}
-              menu_item_model={post.menu_item_model}
-              review_text={post.review_text}
-              score={post.score}
-              price={post.price}
-            />
+            <div key={post.id}>
+              <Post
+                id={post.id}
+                nickName={user.nickName}
+                created_on={post.created_on}
+                loginId={user.id}
+                author={post.author}
+                restaurant={post.restaurant}
+                category={post.category}
+                menu_item={post.menu_item}
+                menu_item_photo={post.menu_item_photo}
+                menu_item_model={post.menu_item_model}
+                review_text={post.review_text}
+                score={post.score}
+                price={post.price}
+              />
+              <div className="w-full">
+                <DynamicModelViewer src={post.menu_item_model} />
+              </div>
+            </div>
           ))}
       </div>
     </Layout>

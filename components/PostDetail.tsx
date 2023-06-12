@@ -1,6 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
 import { PROPS_POST } from "../store/types";
+import dynamic from "next/dynamic";
+
+const DynamicModelViewer = dynamic(() => import("../components/ModelViewer"), {
+  ssr: false,
+});
 
 const PostDetail: React.FC<PROPS_POST> = ({
   //propsとして投稿のデータを受け取る
@@ -41,16 +45,21 @@ const PostDetail: React.FC<PROPS_POST> = ({
           <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
             {"Score: " + score}
           </span>
-        </div>
-        <div className="flex items-center mt-2">
-          <div className="items_left">
+          <div className="">
+            {/* 3Dモデルが存在する場合にModelViewerをレンダリングします */}
             {menu_item_model && (
-              <p className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-                3D
-              </p>
+              <>
+                <p className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                  3Dモデル
+                </p>
+                <div className="border w-full">
+                  <DynamicModelViewer src={menu_item_model} />
+                </div>
+              </>
             )}
           </div>
         </div>
+        <div className="flex items-center mt-2"></div>
       </div>
     </div>
   );

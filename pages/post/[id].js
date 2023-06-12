@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { PROPS_POST } from "../../store/types";
 import { getPostDetail, getPostIds } from "../../store/post/postSlice";
-import { NextPage } from "next";
-import { GetStaticPropsContext } from "next";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import PostDetail from "../../components/PostDetail";
@@ -12,7 +10,6 @@ import {
   selectIsLoadingAuth,
   selectProfile,
 } from "../../store/auth/authSlice.ts";
-
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const DetailPost = ({ staticPost, id }) => {
