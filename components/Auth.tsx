@@ -38,6 +38,7 @@ const Auth: React.FC = () => {
       onSubmit={async (values) => {
         await dispatch(fetchCredStart()); // ローディング状態のアクション
         let result;
+        let resultReg;
         if (isLogin) {
           // ログインモードの場合
           result = await dispatch(fetchAsyncLogin(values)); // 入力(value)を引数としてログインアクションを発行
@@ -46,12 +47,11 @@ const Auth: React.FC = () => {
         } else {
           // 新規登録モードの場合
           // ユーザー登録が成功した場合、ログインを行い、プロフィールを作成し、プロフィール一覧と自身のプロフィールを取得。
-          result = await dispatch(fetchAsyncRegister(values)); // ユーザー登録アクション
-          if (fetchAsyncRegister.fulfilled.match(result)) {
+          resultReg = await dispatch(fetchAsyncRegister(values)); // ユーザー登録アクション
+          if (fetchAsyncRegister.fulfilled.match(resultReg)) {
+            await dispatch(fetchAsyncLogin(values));
             await dispatch(fetchAsyncCreateProf({ nickName: "anonymous" })); // プロフィールを作成するアクション
             await dispatch(fetchAsyncGetProfs()); // 全てのプロフィールを取得するアクション
-            await dispatch(fetchAsyncGetMyProf());
-            result = await dispatch(fetchAsyncLogin(values)); // 入力(value)を引数としてログインアクションを発行
             await dispatch(fetchAsyncGetMyProf()); // 自分のプロフィールを取得するアクション
             router.push("/post-page");
           }
