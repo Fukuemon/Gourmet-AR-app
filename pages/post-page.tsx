@@ -29,10 +29,6 @@ import Cookie from "universal-cookie";
 
 const cookie = new Cookie();
 
-const DynamicModelViewer = dynamic(() => import("../components/ModelViewer"), {
-  ssr: false,
-});
-
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Postpage: NextPage<{ staticPosts: PROPS_POST[] }> = ({ staticPosts }) => {
@@ -99,7 +95,7 @@ export async function getStaticProps() {
 
   return {
     props: { staticPosts },
-    revalidate: 1,
+    revalidate: 10,
   };
 }
 
