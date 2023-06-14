@@ -3,61 +3,53 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { AppDispatch } from "../store/store";
 import { useSelector, useDispatch } from "react-redux";
-import Image from "next/image";
-import Link from "next/link";
 import Post from "../components/Post";
 import useSWR from "swr";
 import { PROPS_POST } from "../store/types";
 import Layout from "../components/Layout";
 import {
   getPosts,
-  selectPosts,
-  selectIsLoadingPost,
-  setOpenNewPost,
-  resetOpenNewPost,
-  fetchAsyncGetPosts,
   fetchAsyncGetRestaurant,
   fetchAsyncGetCategory,
 } from "../store/post/postSlice";
-import {
-  resetOpenSignIn,
-  selectIsLoadingAuth,
-  selectProfile,
-} from "../store/auth/authSlice";
-import dynamic from "next/dynamic";
+import { resetOpenSignIn, selectProfile } from "../store/auth/authSlice";
 import Cookie from "universal-cookie";
 
-const cookie = new Cookie();
+const cookie = new Cookie(); //cookieの設定
 
+// URLからデータを取得してJSONとして返すfetcher関数
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Postpage: NextPage<{ staticPosts: PROPS_POST[] }> = ({ staticPosts }) => {
   const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
-  const isLoadingPost = useSelector(selectIsLoadingAuth);
   const user = useSelector(selectProfile);
+  // useSWR：データのフェッチとキャッシュを行う
+
   const { data: posts, mutate } = useSWR(
-    `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_list/`,
+    `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_list/`, //指定されたURLから投稿のリストを取得
     fetcher,
     {
-      fallbackData: staticPosts,
+      fallbackData: staticPosts, //fallbackDataとして、静的な投稿データを設定
     }
   );
   useEffect(() => {
-    console.log(cookie);
+    // アクセストークンが存在する場合、サインイン状態をリセットし、レストランとカテゴリの情報を取得
     const fetchGetPost = async () => {
       if (cookie.get("access_token")) {
         dispatch(resetOpenSignIn());
-        const result = await dispatch(fetchAsyncGetPosts());
-        await dispatch(fetchAsyncGetRestaurant());
+        await dispatch(fetchAsyncGetRestaurant()); //レストランの情報を取得(未実装)
+        await dispatch(fetchAsyncGetCategory()); //カテゴリの情報を取得(未実装)
       } else {
+        // アクセストークンが存在しない場合、ホームページにリダイレクト
         router.push("/");
       }
     };
     fetchGetPost();
-    mutate();
+    mutate(); //データの再フェッチを実行
   }, [dispatch]);
 
+  // データがまだロードされていない場合、ローディング表示
   if (router.isFallback || !posts) {
     return <div className="text-center">Loading...</div>;
   }
@@ -90,12 +82,13 @@ const Postpage: NextPage<{ staticPosts: PROPS_POST[] }> = ({ staticPosts }) => {
   );
 };
 
+//SSG(ISR)使用
 export async function getStaticProps() {
   const staticPosts = await getPosts();
 
   return {
     props: { staticPosts },
-    revalidate: 10,
+    revalidate: 10, // 10秒ごとに再生成
   };
 }
 

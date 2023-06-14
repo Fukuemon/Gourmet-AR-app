@@ -5,18 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import PostDetail from "../../components/PostDetail";
 import useSWR from "swr";
-import {
-  resetOpenSignIn,
-  selectIsLoadingAuth,
-  selectProfile,
-} from "../../store/auth/authSlice.ts";
+import { selectProfile } from "../../store/auth/authSlice.ts";
 import Cookie from "universal-cookie";
 
 const cookie = new Cookie();
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const DetailPost = ({ staticPost, id }) => {
-  const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector(selectProfile);
 
@@ -30,14 +25,13 @@ const DetailPost = ({ staticPost, id }) => {
   useEffect(() => {
     const fetchGetPost = async () => {
       if (cookie.get("access_token")) {
-        dispatch(resetOpenSignIn());
       } else {
         router.push("/");
       }
     };
     fetchGetPost();
     mutate();
-  }, [dispatch]);
+  }, []);
 
   if (router.isFallback || !post) {
     return <div className="text-center">Loading...</div>;
