@@ -19,6 +19,11 @@ interface NavbarProps {
   title: string;
 }
 
+const removeCookie = (key: string) => {
+  cookie.remove(key, { path: "/" });
+};
+
+// 使用例
 const Navbar: FC<NavbarProps> = ({ title }) => {
   const router = useRouter();
   const profile = useSelector(selectProfile);
@@ -26,7 +31,7 @@ const Navbar: FC<NavbarProps> = ({ title }) => {
   const logout: MouseEventHandler<HTMLAnchorElement> = async (event) => {
     event.preventDefault();
     dispatch(fetchCredStart());
-    localStorage.removeItem("localJWT");
+    removeCookie("access_token");
     router.push("/");
     dispatch(fetchCredEnd());
   };

@@ -6,13 +6,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 import {
-  selectIsLoadingAuth, //セレクター
-  selectOpenSignIn,
-  selectOpenSignUp,
-  setOpenSignIn,
-  resetOpenSignIn,
-  setOpenSignUp,
-  resetOpenSignUp,
+  selectIsLoadingAuth, //認証のローディング
   fetchCredStart, //ローディング処理の開始
   fetchCredEnd, // ローディングの終了
   fetchAsyncLogin, // JWTトークンを取得する非同期関数
@@ -25,8 +19,6 @@ import {
 const Auth: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true); // フォームがログインモードかどうかのステートを管理
   const router = useRouter(); //useRouterをインポート(ルーティングの機能)
-  const openSignIn = useSelector(selectOpenSignIn); // ログイン画面が開かれているかのステートを取得
-  const openSignUp = useSelector(selectOpenSignUp); // サインアップ画面が開かれているかのステートを取得
   const isLoadingAuth = useSelector(selectIsLoadingAuth); // 認証ローディングが行われているかどうかのステートを取得
   const dispatch: AppDispatch = useDispatch(); //useDispatchを使い、アクションを発行できるdispatch関数を取得
 
@@ -57,7 +49,6 @@ const Auth: React.FC = () => {
           }
         }
         await dispatch(fetchCredEnd()); // ローディング状態を終了するアクション
-        await dispatch(resetOpenSignIn()); // ログイン画面を閉じるアクション
       }}
       // フォームのバリデーションスキーマを設定。emailは必須で、正しいフォーマットであることが要求。passwordも必須で、最小文字数は4と設定。
       validationSchema={Yup.object().shape({
