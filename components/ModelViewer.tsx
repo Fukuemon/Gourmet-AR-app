@@ -52,7 +52,7 @@ const ModelViewer: FC<ModelViewerProps> = ({ src }) => {
     <model-viewer
       style={style}
       className="w-full h-full"
-      src="/4ステーキコンボ.glb"
+      src={src}
       auto-rotate
       camera-controls
       ar
