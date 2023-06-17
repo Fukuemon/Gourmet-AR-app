@@ -37,7 +37,6 @@ const PostDetail: React.FC<PROPS_POST> = ({
       <div className="p-4">
         <h2 className="font-bold text-lg">{menu_item}</h2>
         <span className="text-gray-700 mt-2">投稿日：{created_on}</span>
-        <div className="text-gray-700 mt-2">投稿者：{nickName}</div>
         <div className="mt-3">
           <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
             {"¥" + price}
@@ -57,6 +56,10 @@ const PostDetail: React.FC<PROPS_POST> = ({
                 </div>
               </>
             )}
+          </div>
+          <div className="border mt-4">
+            <p className="font-bold text-lg pl-4">レビュー</p>
+            <span className="pl-4">{review_text}</span>
           </div>
         </div>
         <div className="flex items-center mt-2"></div>
