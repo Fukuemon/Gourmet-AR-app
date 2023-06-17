@@ -11,7 +11,7 @@ interface LayoutProps {
 }
 
 const Main: FC<{ children: ReactNode }> = ({ children }) => (
-  <main className="flex justify-center items-center flex-col w-screen">
+  <main className="flex justify-center items-center flex-col w-screen mb-20">
     {children}
   </main>
 );
@@ -129,7 +129,7 @@ const BottomNavBar: FC = () => (
         type="button"
         className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
       >
-        <Link href="/artestview">
+        <Link href="/3d-introduction">
           <a>
             <svg
               className="w-6 h-6 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"

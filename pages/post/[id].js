@@ -44,7 +44,7 @@ const DetailPost = ({ staticPost, id }) => {
           <PostDetail
             key={post.id}
             id={post.id}
-            nickName={user.nickName}
+            nickName={post.author}
             created_on={post.created_on}
             loginId={user.id}
             author={post.author}

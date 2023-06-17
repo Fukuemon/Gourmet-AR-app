@@ -36,7 +36,7 @@ const ModelViewer: FC<ModelViewerProps> = ({ src }) => {
       } else if (window.innerWidth < 900) {
         setStyle({ width: "100%", height: "600px" });
       } else {
-        setStyle({ width: "100%", height: "800px" });
+        setStyle({ width: "100%", height: "400px" });
       }
     }
 
