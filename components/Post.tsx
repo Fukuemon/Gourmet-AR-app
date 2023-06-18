@@ -20,16 +20,19 @@ const Post: React.FC<PROPS_POST> = ({
 }) => {
   return (
     <div className="border rounded-md overflow-hidden shadow-md my-3">
-      {menu_item_photo && (
-        <Image
-          src={menu_item_photo}
-          alt={menu_item}
-          width={500}
-          height={300}
-          layout="responsive"
-          objectFit="cover"
-        />
-      )}
+      <Link href={`/post/${id}`}>
+        {menu_item_photo && (
+          <Image
+            src={menu_item_photo}
+            alt={menu_item}
+            width={500}
+            height={300}
+            layout="responsive"
+            objectFit="cover"
+          />
+        )}
+      </Link>
+
       <div className="p-4">
         <h2 className="font-bold text-lg">{menu_item}</h2>
         <span className="text-gray-700 mt-2">投稿日：{created_on}</span>
@@ -41,19 +44,12 @@ const Post: React.FC<PROPS_POST> = ({
             {"Score: " + score}
           </span>
         </div>
-        <div className="flex items-center mt-2">
-          <Link href={`/post/${id}`}>
-            <a className="text-indigo-500 hover:text-indigo-600 text-sm">
-              詳細
-            </a>
-          </Link>
-          <div className="pl-4">
-            {menu_item_model && (
-              <p className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-                3D
-              </p>
-            )}
-          </div>
+        <div className=" flex">
+          {menu_item_model && (
+            <p className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+              3D
+            </p>
+          )}
         </div>
       </div>
     </div>

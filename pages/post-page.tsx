@@ -20,7 +20,7 @@ const cookie = new Cookie(); //cookieの設定
 // URLからデータを取得してJSONとして返すfetcher関数
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const Postpage: NextPage<{ staticPosts: PROPS_POST[] }> = ({ staticPosts }) => {
+const Postpage: NextPage<{ Posts: PROPS_POST[] }> = ({ Posts }) => {
   const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
   const user = useSelector(selectProfile);
@@ -30,7 +30,7 @@ const Postpage: NextPage<{ staticPosts: PROPS_POST[] }> = ({ staticPosts }) => {
     `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_list/`, //指定されたURLから投稿のリストを取得
     fetcher,
     {
-      fallbackData: staticPosts, //fallbackDataとして、静的な投稿データを設定
+      fallbackData: Posts, //fallbackDataとして、静的な投稿データを設定
     }
   );
   useEffect(() => {
@@ -82,13 +82,13 @@ const Postpage: NextPage<{ staticPosts: PROPS_POST[] }> = ({ staticPosts }) => {
   );
 };
 
-//SSG(ISR)使用
-export async function getStaticProps() {
-  const staticPosts = await getPosts();
+//SSR使用
+export async function getServerSideProps() {
+  const Posts = await getPosts();
 
   return {
-    props: { staticPosts },
-    revalidate: 10, // 10秒ごとに再生成
+    props: { Posts },
+    // revalidate: 10, // 10秒ごとに再生成
   };
 }
 
