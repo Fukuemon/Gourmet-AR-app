@@ -78,7 +78,7 @@ export async function getStaticProps({ params }) {
       id: staticPost.id,
       staticPost,
     },
-    revalidate: 1,
+    revalidate: 60,
   };
 }
 
