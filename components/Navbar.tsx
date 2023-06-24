@@ -23,7 +23,6 @@ const removeCookie = (key: string) => {
   cookie.remove(key, { path: "/" });
 };
 
-// 使用例
 const Navbar: FC<NavbarProps> = ({ title }) => {
   const router = useRouter();
   const profile = useSelector(selectProfile);
