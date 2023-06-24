@@ -21,6 +21,8 @@ const Auth: React.FC = () => {
   const router = useRouter(); //useRouterをインポート(ルーティングの機能)
   const isLoadingAuth = useSelector(selectIsLoadingAuth); // 認証ローディングが行われているかどうかのステートを取得
   const dispatch: AppDispatch = useDispatch(); //useDispatchを使い、アクションを発行できるdispatch関数を取得
+  const GUEST_EMAIL = "user2@gmail.com";
+  const GUEST_PASSWORD = "YOSIKAWA";
 
   return (
     <Formik
@@ -156,6 +158,23 @@ const Auth: React.FC = () => {
                 disabled={!isValid}
               >
                 {isLogin ? "ログイン" : "新規作成"}
+              </button>
+              <button
+                onClick={async () => {
+                  await dispatch(fetchCredStart());
+                  await dispatch(
+                    fetchAsyncLogin({
+                      email: GUEST_EMAIL,
+                      password: GUEST_PASSWORD,
+                    })
+                  );
+                  await dispatch(fetchAsyncGetMyProf());
+                  router.push("/post-page");
+                  await dispatch(fetchCredEnd());
+                }}
+                className="flex w-full justify-center mt-4 rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+              >
+                ゲストで参加
               </button>
             </div>
           </form>
