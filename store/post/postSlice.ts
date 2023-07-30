@@ -1,8 +1,8 @@
 // Redux Toolkitと必要な関数や型をインポート
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { RootState } from '../store' // ストアのルートステートをインポートします
+import { RootState } from 'store/store' // ストアのルートステートをインポートします
 import axios from 'axios'; // 非同期リクエストのためのaxiosをインポートします
-import { PROPS_NEWPOST, PROPS_RESTAURANT, PROPS_CATEGORY, PROPS_POST  } from '../types'; // 必要なプロパティの型をインポート
+import { PROPS_NEWPOST, PROPS_RESTAURANT, PROPS_CATEGORY, PROPS_POST  } from 'store/types'; // 必要なプロパティの型をインポート
 import Cookie from 'universal-cookie';
 
 const apiUrlPost = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post/`;

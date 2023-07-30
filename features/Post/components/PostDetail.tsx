@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { PROPS_POST } from "../store/types";
+import { PROPS_POST } from "store/types";
 import dynamic from "next/dynamic";
 
-const DynamicModelViewer = dynamic(() => import("../components/ModelViewer"), {
+const DynamicModelViewer = dynamic(() => import("components/ModelViewer"), {
   ssr: false,
 });
 

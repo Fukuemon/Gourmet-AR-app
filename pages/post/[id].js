@@ -3,7 +3,7 @@ import { PROPS_POST } from "../../store/types";
 import { getPostDetail, getPostIds } from "../../store/post/postSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import PostDetail from "../../components/PostDetail";
+import PostDetail from "features/Post/components/PostDetail";
 import useSWR from "swr";
 import { selectProfile } from "../../store/auth/authSlice.ts";
 import Cookie from "universal-cookie";
