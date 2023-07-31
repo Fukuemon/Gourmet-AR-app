@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { PROPS_POST } from "../../store/types";
-import { getPostDetail, getPostIds } from "../../store/post/postSlice";
+import { PROPS_POST } from "../../../types/stores/types";
+import { getPostDetail, getPostIds } from "../../features/Post/store/postSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import PostDetail from "src/features/Post/components/PostDetail";
 import useSWR from "swr";
-import { selectProfile } from "../../store/auth/authSlice.ts";
+import { selectProfile } from "../../features/auth/store/authSlice";
 import Cookie from "universal-cookie";
 
 const cookie = new Cookie();

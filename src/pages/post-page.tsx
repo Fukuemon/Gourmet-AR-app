@@ -5,14 +5,17 @@ import { AppDispatch } from "src/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import Post from "src/features/Post/components/PostList";
 import useSWR from "swr";
-import { PROPS_POST } from "src/store/types";
+import { PROPS_POST } from "types/stores/types";
 import Layout from "src/components/Layout";
 import {
   getPosts,
   fetchAsyncGetRestaurant,
   fetchAsyncGetCategory,
-} from "src/store/post/postSlice";
-import { resetOpenSignIn, selectProfile } from "src/store/auth/authSlice";
+} from "src/features/Post/store/postSlice";
+import {
+  resetOpenSignIn,
+  selectProfile,
+} from "src/features/auth/store/authSlice";
 import Cookie from "universal-cookie";
 
 const cookie = new Cookie(); //cookieの設定

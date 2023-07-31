@@ -7,7 +7,7 @@ import {
   resetOpenSignIn,
   selectProfile,
   setOpenSignIn,
-} from "src/store/auth/authSlice";
+} from "src/features/auth/store/authSlice";
 import { useRouter } from "next/router";
 import { AppDispatch } from "src/store/store";
 import { FC, MouseEventHandler, useEffect } from "react";

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { PROPS_POST } from "src/store/types";
+import { PROPS_POST } from "types/stores/types";
 import dynamic from "next/dynamic";
 
 const DynamicModelViewer = dynamic(() => import("src/components/ModelViewer"), {
