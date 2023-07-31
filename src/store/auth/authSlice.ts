@@ -1,21 +1,26 @@
 // Redux Toolkitと必要な関数や型をインポート
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { RootState } from 'store/store' // ストアのルートステートをインポートします
-import axios from 'axios'; // 非同期リクエストのためのaxiosをインポートします
-import { PROPS_AUTHEN, PROPS_NICKNAME, PROPS_PROFILE } from 'store/types'; // 必要なプロパティの型をインポート
-import Cookie from 'universal-cookie';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { RootState } from "src/store/store"; // ストアのルートステートをインポートします
+import axios from "axios"; // 非同期リクエストのためのaxiosをインポートします
+import { PROPS_AUTHEN, PROPS_NICKNAME, PROPS_PROFILE } from "src/store/types"; // 必要なプロパティの型をインポート
+import Cookie from "universal-cookie";
 
 const cookie = new Cookie();
 
 // 非同期処理でJWTトークンを取得するための関数を定義
 export const fetchAsyncLogin = createAsyncThunk(
   "auth/post", // アクションのタイプを定義します
-  async (authen: PROPS_AUTHEN) => { // authenを引数に取るペイロードクリエーター関数を定義
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_RESTAPI_URL}authen/jwt/create`, authen, {
-      headers: {
-        "Content-Type": "application/json", // リクエストのContent-Typeを定義
-      },
-    });
+  async (authen: PROPS_AUTHEN) => {
+    // authenを引数に取るペイロードクリエーター関数を定義
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_RESTAPI_URL}authen/jwt/create`,
+      authen,
+      {
+        headers: {
+          "Content-Type": "application/json", // リクエストのContent-Typeを定義
+        },
+      }
+    );
     return res.data; // リクエストの結果を返す
   }
 );
@@ -24,28 +29,36 @@ export const fetchAsyncLogin = createAsyncThunk(
 export const fetchAsyncRegister = createAsyncThunk(
   "auth/register",
   async (auth: PROPS_AUTHEN) => {
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/register/`, auth, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/register/`,
+      auth,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return res.data; // 登録結果を返
   }
-)
+);
 
 // プロフィールを新規作成するための非同期処理を定義
 export const fetchAsyncCreateProf = createAsyncThunk(
   "profile/post",
   async (nickName: PROPS_NICKNAME) => {
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/profile/`, nickName, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `JWT ${cookie.get('access_token')}`, // JWT認証が必要
-      },
-    });
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/profile/`,
+      nickName,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${cookie.get("access_token")}`, // JWT認証が必要
+        },
+      }
+    );
     return res.data; // プロフィール作成結果を返
   }
-)
+);
 
 // プロフィールを編集するための非同期処理を定義
 export const fetchAsyncUpdateProf = createAsyncThunk(
@@ -66,32 +79,45 @@ export const fetchAsyncUpdateProf = createAsyncThunk(
     );
     return res.data; // プロフィール編集結果を返
   }
-)
+);
 
 // ログインしているユーザー自身のプロフィールを取得するための非同期処理を定義
-export const fetchAsyncGetMyProf = createAsyncThunk("profile/getMyProf", async () => {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/myprofile/`, {
-    headers: {
-      Authorization: `JWT ${cookie.get("access_token")}`, // JWT認証が必要
-    },
-  });
-  return res.data[0]; // 最初のプロフィールデータを返
-});
+export const fetchAsyncGetMyProf = createAsyncThunk(
+  "profile/getMyProf",
+  async () => {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/myprofile/`,
+      {
+        headers: {
+          Authorization: `JWT ${cookie.get("access_token")}`, // JWT認証が必要
+        },
+      }
+    );
+    return res.data[0]; // 最初のプロフィールデータを返
+  }
+);
 
 // プロフィール一覧を取得するための非同期処理を定義
-export const fetchAsyncGetProfs = createAsyncThunk("profile/getProfs", async () => {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/profile/`, {
-    headers: {
-      Authorization: `JWT ${cookie.get("access_token")}`, // JWT認証が必要
-    },
-  });
-  return res.data; // プロフィールデータを返
-});
+export const fetchAsyncGetProfs = createAsyncThunk(
+  "profile/getProfs",
+  async () => {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/profile/`,
+      {
+        headers: {
+          Authorization: `JWT ${cookie.get("access_token")}`, // JWT認証が必要
+        },
+      }
+    );
+    return res.data; // プロフィールデータを返
+  }
+);
 
 // authのsliceを作成
 export const authSlice = createSlice({
-  name: 'auth', // sliceの名前を定義
-  initialState: { // 初期状態を設定
+  name: "auth", // sliceの名前を定義
+  initialState: {
+    // 初期状態を設定
     openSignIn: true,
     openSignUp: false,
     openProfile: false,
@@ -113,7 +139,8 @@ export const authSlice = createSlice({
       },
     ],
   },
-  reducers: { // 各種reducerを定義
+  reducers: {
+    // 各種reducerを定義
     fetchCredStart(state) {
       state.isLoadingAuth = true; // 認証のロード状態をtrueに
     },
@@ -146,8 +173,8 @@ export const authSlice = createSlice({
   // 非同期処理の結果を元にstateを更新するextraReducerを定義
   extraReducers: (builder) => {
     builder.addCase(fetchAsyncLogin.fulfilled, (state, action) => {
-      const options = { path: "/" }
-      cookie.set("access_token", action.payload.access, options);// JWTをlocalStorageに保存
+      const options = { path: "/" };
+      cookie.set("access_token", action.payload.access, options); // JWTをlocalStorageに保存
     });
     builder.addCase(fetchAsyncCreateProf.fulfilled, (state, action) => {
       state.myprofile = action.payload; // プロフィールを更新
@@ -161,27 +188,28 @@ export const authSlice = createSlice({
     builder.addCase(fetchAsyncUpdateProf.fulfilled, (state, action) => {
       state.myprofile = action.payload; // プロフィールを更新
       state.profiles = state.profiles.map((prof) =>
-      prof.id === action.payload.id ? action.payload : prof) // プロフィール一覧の該当のプロフィールを更新
-    })
-
+        prof.id === action.payload.id ? action.payload : prof
+      ); // プロフィール一覧の該当のプロフィールを更新
+    });
   },
 });
 
 // action creatorをエクスポート
 export const {
-  fetchCredStart, 
-  fetchCredEnd, 
-  setOpenSignIn, 
-  resetOpenSignIn, 
-  setOpenSignUp, 
-  resetOpenSignUp, 
-  setOpenProfile, 
-  resetOpenProfile, 
-  editNickName  
+  fetchCredStart,
+  fetchCredEnd,
+  setOpenSignIn,
+  resetOpenSignIn,
+  setOpenSignUp,
+  resetOpenSignUp,
+  setOpenProfile,
+  resetOpenProfile,
+  editNickName,
 } = authSlice.actions;
 
 // 各stateの値を取得するためのセレクター関数を定義
-export const selectIsLoadingAuth = (state: RootState) => state.auth.isLoadingAuth;
+export const selectIsLoadingAuth = (state: RootState) =>
+  state.auth.isLoadingAuth;
 export const selectOpenSignIn = (state: RootState) => state.auth.openSignIn;
 export const selectOpenSignUp = (state: RootState) => state.auth.openSignUp;
 export const selectOpenProfile = (state: RootState) => state.auth.openProfile;

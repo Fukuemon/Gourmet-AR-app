@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
-import Auth from "features/auth/Auth";
-import Layout from "components/Layout";
+import Auth from "src/features/auth/Auth";
+import Layout from "src/components/Layout";
 
 const Home: NextPage = () => {
   return (

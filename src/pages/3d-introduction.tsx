@@ -3,10 +3,10 @@ import { useState, FC } from "react";
 import Head from "next/head";
 
 // カスタムコンポーネントをインポート
-import Layout from "components/Layout";
-import FileUpload from "components/FileUpload";
+import Layout from "src/components/Layout";
+import FileUpload from "src/components/FileUpload";
 import { NextPage } from "next";
-import Intro from "features/Intro/components/Intro";
+import Intro from "src/features/Intro/components/Intro";
 
 const ARview: NextPage = () => {
   return (

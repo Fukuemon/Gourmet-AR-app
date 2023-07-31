@@ -1,18 +1,18 @@
 import { NextPage } from "next";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { AppDispatch } from "store/store";
+import { AppDispatch } from "src/store/store";
 import { useSelector, useDispatch } from "react-redux";
-import Post from "features/Post/components/PostList";
+import Post from "src/features/Post/components/PostList";
 import useSWR from "swr";
-import { PROPS_POST } from "store/types";
-import Layout from "components/Layout";
+import { PROPS_POST } from "src/store/types";
+import Layout from "src/components/Layout";
 import {
   getPosts,
   fetchAsyncGetRestaurant,
   fetchAsyncGetCategory,
-} from "store/post/postSlice";
-import { resetOpenSignIn, selectProfile } from "store/auth/authSlice";
+} from "src/store/post/postSlice";
+import { resetOpenSignIn, selectProfile } from "src/store/auth/authSlice";
 import Cookie from "universal-cookie";
 
 const cookie = new Cookie(); //cookieの設定

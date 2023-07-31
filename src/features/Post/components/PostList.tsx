@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { PROPS_POST } from "store/types";
+import { PROPS_POST } from "src/store/types";
 
 const Post: React.FC<PROPS_POST> = ({
   //propsとして投稿のデータを受け取る
