@@ -3,7 +3,7 @@ import { useState, FC } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
-import FileUpload from "src/components/FileUpload";
+import FileUpload from "src/components/elements/Form/FileUpload";
 const DynamicModelViewer = dynamic(() => import("src/components/ModelViewer"), {
   ssr: false,
 });

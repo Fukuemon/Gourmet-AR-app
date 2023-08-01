@@ -1,59 +1,17 @@
-import { NextPage } from "next";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { AppDispatch } from "src/store/store";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { selectProfile } from "src/features/auth/store/authSlice";
 import Post from "src/features/Post/components/PostList";
-import useSWR from "swr";
+import Layout from "src/components/layouts/Layout";
 import { PROPS_POST } from "types/stores/types";
-import Layout from "src/components/Layout";
-import {
-  getPosts,
-  fetchAsyncGetRestaurant,
-  fetchAsyncGetCategory,
-} from "src/features/Post/store/postSlice";
-import {
-  resetOpenSignIn,
-  selectProfile,
-} from "src/features/auth/store/authSlice";
-import Cookie from "universal-cookie";
+import { usePosts } from "src/features/Post/hooks/usePost";
+import { getPosts } from "src/features/Post/store/postSlice";
+import { NextPage } from "next";
 
-const cookie = new Cookie(); //cookieの設定
-
-// URLからデータを取得してJSONとして返すfetcher関数
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-const Postpage: NextPage<{ Posts: PROPS_POST[] }> = ({ Posts }) => {
-  const dispatch: AppDispatch = useDispatch();
-  const router = useRouter();
-  const user = useSelector(selectProfile);
-  // useSWR：データのフェッチとキャッシュを行う
-
-  const { data: posts, mutate } = useSWR(
-    `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post_list/`, //指定されたURLから投稿のリストを取得
-    fetcher,
-    {
-      fallbackData: Posts, //fallbackDataとして、静的な投稿データを設定
-    }
-  );
-  useEffect(() => {
-    // アクセストークンが存在する場合、サインイン状態をリセットし、レストランとカテゴリの情報を取得
-    const fetchGetPost = async () => {
-      if (cookie.get("access_token")) {
-        dispatch(resetOpenSignIn());
-        await dispatch(fetchAsyncGetRestaurant()); //レストランの情報を取得(未実装)
-        await dispatch(fetchAsyncGetCategory()); //カテゴリの情報を取得(未実装)
-      } else {
-        // アクセストークンが存在しない場合、ホームページにリダイレクト
-        router.push("/");
-      }
-    };
-    fetchGetPost();
-    mutate(); //データの再フェッチを実行
-  }, [dispatch]);
-
+const Postpage = ({ Posts }: { Posts: PROPS_POST[] }) => {
+  const user = useSelector(selectProfile); // ログインユーザーの情報を取得
+  const { posts, loading } = usePosts(Posts); //カスタムフック：投稿一覧を取得
   // データがまだロードされていない場合、ローディング表示
-  if (router.isFallback || !posts) {
+  if (loading) {
     return <div className="text-center">Loading...</div>;
   }
 
