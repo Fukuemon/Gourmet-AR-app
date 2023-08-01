@@ -79,8 +79,7 @@ export const authSlice = createSlice({
   name: "auth", // sliceの名前を定義
   initialState: {
     // 初期状態を設定
-    openSignIn: true,
-    openSignUp: false,
+    isLogin: true,
     openProfile: false,
     isLoadingAuth: false,
     myprofile: {
@@ -109,16 +108,10 @@ export const authSlice = createSlice({
       state.isLoadingAuth = false; // 認証のロード状態をfalseに
     },
     setOpenSignIn(state) {
-      state.openSignIn = true; // ログイン画面を表示
+      state.isLogin = true; // ログイン画面を表示
     },
     resetOpenSignIn(state) {
-      state.openSignIn = false; // ログイン画面を非表示に
-    },
-    setOpenSignUp(state) {
-      state.openSignUp = true; // 登録画面を表示
-    },
-    resetOpenSignUp(state) {
-      state.openSignUp = false; // 登録画面を非表示に
+      state.isLogin = false; // ログイン画面を非表示に
     },
     setOpenProfile(state) {
       state.openProfile = true; // プロフィール画面を表示
@@ -161,8 +154,6 @@ export const {
   fetchCredEnd,
   setOpenSignIn,
   resetOpenSignIn,
-  setOpenSignUp,
-  resetOpenSignUp,
   setOpenProfile,
   resetOpenProfile,
   editNickName,
@@ -171,8 +162,7 @@ export const {
 // 各stateの値を取得するためのセレクター関数を定義
 export const selectIsLoadingAuth = (state: RootState) =>
   state.auth.isLoadingAuth;
-export const selectOpenSignIn = (state: RootState) => state.auth.openSignIn;
-export const selectOpenSignUp = (state: RootState) => state.auth.openSignUp;
+export const selectOpenSignIn = (state: RootState) => state.auth.isLogin;
 export const selectOpenProfile = (state: RootState) => state.auth.openProfile;
 export const selectProfile = (state: RootState) => state.auth.myprofile;
 export const selectProfiles = (state: RootState) => state.auth.profiles;
