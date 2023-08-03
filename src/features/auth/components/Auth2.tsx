@@ -4,10 +4,13 @@ import * as Yup from "yup";
 import { useAuth } from "../hooks/useAuth";
 import LoadingSpinner from "src/components/elements/Spinner/LoadingSpinner";
 import FormField from "src/components/elements/Form/FormField";
+import Button from "src/components/elements/Button/Button";
+import { useSelector } from "react-redux";
+import { selectIsLoadingAuth, selectIsLogin } from "../store/authSlice";
 
 export const Auth2: React.FC = () => {
-  const { isLogin, isLoadingAuth, switchMode, handleSubmit, handleGuestLogin } =
-    useAuth();
+  const { switchMode, handleSubmit, handleGuestLogin, switchKey } = useAuth();
+  const isLoadingAuth = useSelector(selectIsLoadingAuth);
 
   return (
     <Formik
@@ -30,12 +33,13 @@ export const Auth2: React.FC = () => {
         values,
         errors,
         touched,
+        setErrors,
       }) => (
         <div className="flex justify-center items-center flex-col w-screen min-h-screen bg-amber-50">
           <div className="flex flex-col justify-center items-center p-8 w-96 bg-white rounded-lg shadow-2xl">
             <div className="flex flex-col justify-center items-center">
               <h2 className="text-2xl text-gray-800 font-bold m-4">
-                {isLogin ? "ログイン" : "新規登録"}
+                {switchKey ? "ログイン" : "新規登録"}
               </h2>
               {isLoadingAuth && <LoadingSpinner />}
               <div className="flex itmes-center justify-center">
@@ -44,7 +48,7 @@ export const Auth2: React.FC = () => {
                     onClick={switchMode}
                     className="cursor-pointer font-medium text-indigo-500 hover:text-indigo-600"
                   >
-                    {isLogin
+                    {switchKey
                       ? "アカウントを作っていない場合はこちら"
                       : "ログインはこちら"}
                   </span>
@@ -76,20 +80,21 @@ export const Auth2: React.FC = () => {
                 touched={touched}
               />
               <div>
-                <button
+                <Button
                   type="submit"
+                  onClick={handleSubmit}
                   className="w-full bg-yellow-500 hover:bg-orange-400 text-white font-bold py-2 px-4 my-2 rounded focus:outline-none focus:shadow-outline"
                 >
-                  {isLogin ? "ログイン" : "新規登録"}
-                </button>
+                  {switchKey ? "ログイン" : "新規登録"}
+                </Button>
 
-                <button
+                <Button
                   type="button"
-                  onClick={handleGuestLogin}
+                  onClick={handleGuestLogin(setErrors)}
                   className="w-full  bg-slate-400 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
                   ゲストとしてログイン
-                </button>
+                </Button>
               </div>
             </form>
           </div>
