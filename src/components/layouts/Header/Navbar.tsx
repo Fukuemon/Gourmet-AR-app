@@ -1,83 +1,62 @@
-import { useDispatch, useSelector } from "react-redux";
+/**Navbar.tsx
+ * レイアウトコンポーネントのヘッダーのナビゲーションバー
+ * ログインしているユーザーのプロフィール情報を表示
+ * useAuthCookiesからログアウト処理とログイン状態のロジックを受け取る
+ */
+import { useSelector } from "react-redux";
 import {
-  fetchAsyncGetMyProf,
-  fetchAsyncGetProfs,
-  fetchCredEnd,
-  fetchCredStart,
-  resetOpenSignIn,
+  selectIsLogin,
   selectProfile,
-  setOpenSignIn,
 } from "src/features/auth/store/authSlice";
-import { useRouter } from "next/router";
-import { AppDispatch } from "src/store/store";
-import { FC, MouseEventHandler, useEffect } from "react";
-import Cookie from "universal-cookie";
-
-const cookie = new Cookie();
+import { FC } from "react";
+import { useAuthCookies } from "src/features/auth/hooks/useAuthCookies";
+import Link from "next/link";
 
 interface NavbarProps {
   title: string;
 }
 
-const removeCookie = (key: string) => {
-  cookie.remove(key, { path: "/" });
-};
-
 const Navbar: FC<NavbarProps> = ({ title }) => {
-  const router = useRouter();
   const profile = useSelector(selectProfile);
-  const dispatch: AppDispatch = useDispatch();
-  const logout: MouseEventHandler<HTMLAnchorElement> = async (event) => {
-    event.preventDefault();
-    dispatch(fetchCredStart());
-    removeCookie("access_token");
-    router.push("/");
-    dispatch(fetchCredEnd());
-  };
-  useEffect(() => {
-    const fetchBootLoader = async () => {
-      if (cookie.get("access_token")) {
-        //jwtトークンがあるかどうか
-        dispatch(resetOpenSignIn()); //ある場合：SignInのstateを更新
-        const result = await dispatch(fetchAsyncGetMyProf()); //ログインしてるユーザーのプロフィール情報を取得
-        if (fetchAsyncGetMyProf.rejected.match(result)) {
-          //切れてる場合
-          dispatch(setOpenSignIn());
-          router.push("/"); //ログイン画面に遷移
-          return null;
-        }
-        await dispatch(fetchAsyncGetProfs());
-      }
-    };
-    fetchBootLoader();
-  }, [dispatch]);
-
+  const isLogin = useSelector(selectIsLogin);
+  const { logout } = useAuthCookies(); // ログアウト処理を受け取る
   return (
     <div className="navbar bg-yellow-50 border-b mb-4">
       <div className="navbar-start flex-1">
         <a className="btn btn-ghost normal-case text-xl">{title}</a>
       </div>
-      <div className="navbar-center">
-        <a className="btn btn-ghost normal-case text-xl">{profile.nickName}</a>
-      </div>
-      <div className="dropdown dropdown-end">
-        <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-          <div className="rounded-full">
-            <img src={profile.img} alt="User Profile" />
+      {isLogin ? ( // ログインしている場合はプロフィール画像を表示
+        <>
+          <div className="navbar-center">
+            <a className="btn btn-ghost normal-case text-xl">
+              {profile.nickName}
+            </a>
           </div>
-        </label>
-        <ul
-          tabIndex={0}
-          className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
-        >
-          <li>
-            <a className="justify-between">Profile</a>
-          </li>
-          <li>
-            <a onClick={logout}>Logout</a>
-          </li>
-        </ul>
-      </div>
+          <div className="dropdown dropdown-end">
+            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+              <div className="rounded-full">
+                <img src={profile.img} alt="User Profile" />
+              </div>
+            </label>
+            <ul
+              tabIndex={0}
+              className="absolute z-30 mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <a onClick={logout}>Logout</a>
+              </li>
+            </ul>
+          </div>
+        </>
+      ) : (
+        <>
+          <Link href="/">
+            <a className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white transition duration-200 bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+              Login
+            </a>
+          </Link>
+        </>
+      )}
     </div>
   );
 };

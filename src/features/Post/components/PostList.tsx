@@ -19,11 +19,12 @@ const Post: React.FC<PROPS_POST> = ({
   price,
 }) => {
   return (
-    <div className="border rounded-md overflow-hidden shadow-md my-3">
+    <div className="static border rounded-md overflow-hidden shadow-md my-3">
       <Link href={`/post/${id}`}>
         {menu_item_photo && (
           <Image
             src={menu_item_photo}
+            className="relative z-0"
             alt={menu_item}
             width={500}
             height={300}

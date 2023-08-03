@@ -17,7 +17,7 @@ const Postpage = ({ Posts }: { Posts: PROPS_POST[] }) => {
 
   return (
     <Layout title="PostList">
-      <div className="p-4 w-full max-w-2xl mx-auto">
+      <div className="relative z-0 p-4 w-full max-w-2xl mx-auto">
         {posts &&
           posts.map((post: PROPS_POST) => (
             <div key={post.id}>

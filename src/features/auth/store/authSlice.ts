@@ -1,7 +1,6 @@
 // Redux Toolkitと必要な関数や型をインポート
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "src/store/store"; //
-import axios from "axios"; //
 import {
   PROPS_AUTHEN,
   PROPS_NICKNAME,
@@ -79,9 +78,11 @@ export const authSlice = createSlice({
   name: "auth", // sliceの名前を定義
   initialState: {
     // 初期状態を設定
-    isLogin: true,
-    openProfile: false,
-    isLoadingAuth: false,
+    isLogin: false, // ログイン状態
+    openSignin: true, // ログイン画面の表示状態
+    openSignUp: false, // 新規登録画面の表示状態
+    openProfile: false, // プロフィール画面の表示状態
+    isLoadingAuth: false, // 認証のロード状態
     myprofile: {
       id: 0,
       nickName: "",
@@ -108,10 +109,22 @@ export const authSlice = createSlice({
       state.isLoadingAuth = false; // 認証のロード状態をfalseに
     },
     setOpenSignIn(state) {
-      state.isLogin = true; // ログイン画面を表示
+      state.openSignin = true; // ログイン画面を表示
     },
     resetOpenSignIn(state) {
-      state.isLogin = false; // ログイン画面を非表示に
+      state.openSignin = false; // ログイン画面を非表示に
+    },
+    setOpenSignUp(state) {
+      state.openSignUp = true; // 新規登録画面を表示
+    },
+    resetOpenSignUp(state) {
+      state.openSignUp = false; // 新規登録画面を非表示に
+    },
+    setIsLogin(state) {
+      state.isLogin = true; // ログイン状態に
+    },
+    resetIsLogin(state) {
+      state.isLogin = false; // ログイン状態を解除
     },
     setOpenProfile(state) {
       state.openProfile = true; // プロフィール画面を表示
@@ -154,6 +167,10 @@ export const {
   fetchCredEnd,
   setOpenSignIn,
   resetOpenSignIn,
+  setIsLogin,
+  resetIsLogin,
+  setOpenSignUp,
+  resetOpenSignUp,
   setOpenProfile,
   resetOpenProfile,
   editNickName,
@@ -162,7 +179,7 @@ export const {
 // 各stateの値を取得するためのセレクター関数を定義
 export const selectIsLoadingAuth = (state: RootState) =>
   state.auth.isLoadingAuth;
-export const selectOpenSignIn = (state: RootState) => state.auth.isLogin;
+export const selectIsLogin = (state: RootState) => state.auth.isLogin;
 export const selectOpenProfile = (state: RootState) => state.auth.openProfile;
 export const selectProfile = (state: RootState) => state.auth.myprofile;
 export const selectProfiles = (state: RootState) => state.auth.profiles;
