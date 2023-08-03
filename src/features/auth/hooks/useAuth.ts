@@ -43,6 +43,13 @@ export const useAuth = () => {
   const commonAsyncProcess = async (values: PROPS_AUTHEN) => {
     await dispatch(fetchCredStart());
     await dispatch(fetchAsyncLogin(values));
+    if (
+      fetchAsyncLogin.rejected.match(await dispatch(fetchAsyncLogin(values)))
+    ) {
+      alert("認証に失敗しました。");
+      dispatch(fetchCredEnd());
+      return; // 認証に失敗したら、処理を終了
+    }
     await dispatch(fetchAsyncGetMyProf());
     router.push("/post-page");
     await dispatch(fetchCredEnd());
