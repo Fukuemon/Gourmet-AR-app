@@ -12,7 +12,7 @@ interface LayoutProps {
 }
 
 const Main: FC<{ children: ReactNode }> = ({ children }) => (
-  <main className="flex justify-center items-center flex-col w-screen mb-20">
+  <main className="flex justify-center items-center flex-col w-screen">
     {children}
   </main>
 );

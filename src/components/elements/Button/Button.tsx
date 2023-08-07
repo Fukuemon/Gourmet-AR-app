@@ -14,17 +14,15 @@ const Button: React.FC<ButtonProps> = ({
   type = "button",
   onClick = () => {},
   children,
-}) => {
-  return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={className}
-      data-tooltip-target={dataTooltipTarget}
-    >
-      {children}
-    </button>
-  );
-};
+}) => (
+  <button
+    type={type}
+    onClick={onClick}
+    className={className}
+    data-tooltip-target={dataTooltipTarget}
+  >
+    {children}
+  </button>
+);
 
 export default Button;

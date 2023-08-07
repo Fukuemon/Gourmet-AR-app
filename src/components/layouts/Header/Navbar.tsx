@@ -21,7 +21,7 @@ const Navbar: FC<NavbarProps> = ({ title }) => {
   const isLogin = useSelector(selectIsLogin);
   const { logout } = useAuthCookies(); // ログアウト処理を受け取る
   return (
-    <div className="navbar bg-yellow-50 border-b mb-4">
+    <div className="navbar bg-yellow-50 border-b">
       <div className="navbar-start flex-1">
         <a className="btn btn-ghost normal-case text-xl">{title}</a>
       </div>

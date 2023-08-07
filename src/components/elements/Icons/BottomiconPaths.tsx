@@ -7,7 +7,7 @@ import { SVGAttributes } from "react";
 // Home
 export function HomeIcon(props: SVGAttributes<SVGElement>) {
   return (
-    <Link href="/Home">
+    <Link href="/post-page">
       <a>
         <svg
           className="w-8 h-8 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
@@ -31,7 +31,7 @@ export function HomeIcon(props: SVGAttributes<SVGElement>) {
 // Map
 export function MapIcon(props: SVGAttributes<SVGElement>) {
   return (
-    <Link href="/Map">
+    <Link href="/map-view">
       <a>
         <svg
           className="w-8 h-8 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
@@ -55,7 +55,7 @@ export function MapIcon(props: SVGAttributes<SVGElement>) {
 // New
 export function PlusCircleIcon(props: SVGAttributes<SVGElement>) {
   return (
-    <Link href="/New-post">
+    <Link href="/new-post">
       <a>
         <svg
           className="w-8 h-8 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
@@ -79,7 +79,7 @@ export function PlusCircleIcon(props: SVGAttributes<SVGElement>) {
 // Cube
 export function CubeTransparentIcon(props: SVGAttributes<SVGElement>) {
   return (
-    <Link href="/Intro">
+    <Link href="/3d-introduction">
       <a>
         <svg
           className="w-8 h-8 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
@@ -103,7 +103,7 @@ export function CubeTransparentIcon(props: SVGAttributes<SVGElement>) {
 // User
 export function UserIcon(props: SVGAttributes<SVGElement>) {
   return (
-    <Link href="/User">
+    <Link href="/profile">
       <a>
         <svg
           className="w-8 h-8 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
