@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { PROPS_POST } from "../../../types/stores/types";
+import { PROPS_POST } from "../../types/stores/types";
 import { getPostDetail, getPostIds } from "../../features/Post/store/postSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
