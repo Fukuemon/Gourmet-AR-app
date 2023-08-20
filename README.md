@@ -1,34 +1,214 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+### [Notionでまとめています(仕様書はこちらに記載)](https://www.notion.so/MeAR-3D-84cf0593f880413aab234a8a3195c9c0?pvs=4#520f35f026c8493e84c34b590eb89ea5)
+#### (3Dモデルで表⽰することによるフィードバックを求めています。下記記載)
+# MeAR ~3Dで見るグルメアプリ\~ (開発中)
+**外食先での飲食体験をより豊かなものにする、  3Dモデルの閲覧を可能とした新感覚グルメレビューアプリ**
 
-## Getting Started
+![スキャンアプリ](https://github.com/Fukuemon/Gourmet-AR-app/assets/110335987/acbcfd6f-2ee5-42d9-a6fc-4a1cc9325903)
+既存の3Dスキャンアプリで作成した3Dモデルをアップロードすることで、3Dモデルの投稿を実現しています
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## 🏃🏻Demo
+3Dモデルを活用することで、以下のような視覚体験をすることが可能となります
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+https://github.com/Fukuemon/Gourmet-AR-app/assets/110335987/a4c06f34-a9e8-49ce-837a-2e3b882204b4
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## ❓3Dスキャンアプリとは?
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+ここでは詳しくは説明しないのですが、ざっくり紹介すると、スマホ一台で3Dスキャンを行うことができ、誰でも手軽にそれなりの精度の3Dモデルを作ることができます  
 
-## Learn More
+**興味を持った方はぜひ試してみてください！：**  
+[3Dスキャンアプリ ~Scaniverse\~ 公式ページ](https://scaniverse.com/)  
+(スキャンアプリについて詳しく知りたい方は、以下の記事を参考に)  
+[徹底解説！iPhone 3Dスキャンの撮り方全て教えます](https://note.com/iwamah1/n/n1419056b7445)  
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📝使い方   〜アクセスからAR表示まで〜
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+本アプリはAR機能の習性上、モバイル端末でのみ機能を使うことができます。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**[注意]** 現在開発段階にあり、画像が表示されなかったり、正しく動作しない場合があります
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+何か問題が見つかった場合は、**フォームに詳細内容を入力して送信**していただけると助かります
+
+[MeARフィードバックフォーム](https://docs.google.com/forms/d/1RvD-sHMe5T8REFuV_mGZTptiazWi7TzczQlPRVlVBVk/edit)
+
+---
+
+### 1. アプリへのアクセス
+
+**スマホからのアクセスお願いします**
+
+デスクトップで開いている方は、モバイル端末で下記のURLにアクセスするか、QRコードを読み取ってサイトにアクセスしてください。
+
+[サイト](https://gourmet-ar-reviewapp.vercel.app/)
+
+### (**QRコード)**
+
+![Untitled](https://github.com/Fukuemon/Gourmet-AR-app/assets/110335987/961a1bde-2c17-418d-818f-cf3b45d0079b)
+
+
+---
+
+### 2. ログイン・新規登録画面
+アプリにアクセスすると、最初にログイン画面に遷移します
+
+ここでは**ログイン・新規登録・ゲストログイン**の3つの選択肢があります.  
+(※ローディングに時間がかかる場合があります)
+
+1.**ゲストでログインする場合**
+    
+「ログインor新規登録」ボタンの下記にあるゲストログインボタンを押すことで、ユーザー認証を行わずにログインすることが可能です
+    
+2.**ログインする場合**
+    
+登録したメールアドレスとパスワードを入力後、ログインボタンを押してください
+    
+ログインに成功すると、フィード画面に遷移します
+    
+3.**新規で登録する場合**
+    
+「アカウントを持っていない場合はこちら」というボタンを押すと、新規登録画面に切り替わります
+    
+そこでメールアドレスとパスワードを入力し、新規登録ボタンを押してください
+    
+登録に成功すると、フィード画面に遷移します
+    
+---
+
+### 3. フィード画面
+
+この画面では全てのユーザーの投稿一覧を閲覧することができます
+
+(現在は投稿機能が実装できていないため、開発者の投稿のみを表示)
+
+**画像をタップすると、投稿詳細画⾯に遷移します**
+
+1.ゲストログインの場合
+    
+上部のNavbarがLoginボタンになっています
+    
+(ボタンを押すとログイン画面へ遷移します)
+
+---
+
+### 4. 投稿詳細画面
+
+(※画像や3Dモデルが表示されない場合があります。その際は、再読み込みしてください)
+投稿の詳細を確認することができます
+
+1.3Dモデルが表⽰されます
+※モデルの読み込み時間があります。   
+2.右下のアイコンを押すことで、AR画⾯へ移動します
+
+---
+
+### 5. 3Dモデルの閲覧・アップロード体験画面
+
+3Dモデル閲覧の体験、モデルのアップロードを試すことができる画面です
+
+(将来的には、3DスキャンとARを紹介するページになる予定です)
+
+1.デフォルトではステーキのモデルが表⽰されています  
+2.ファイルアップロードであなたが所持しているglbファイルをアップロードすることで、そのモデルが表⽰されます
+
+## 🙇🏻‍♂️**フィードバックのお願い**
+
+### 3Dモデルで表⽰することにより、既存のグルメアプリと⽐べてどのような違いがあるのか、ぜひ皆様の体験と意⾒を共有してください
+
+**(本アプリの使い⽅については、上記に記載しています)**
+
+### 具体的には、以下の点についてのフィードバックを求めています
+
+- 各端末に応じたページの読み込み速度
+    
+    (例：次のページに遷移するまでにどれぐらい時間がかかるか)
+    
+- 3Dモデルの閲覧体験について
+    
+    (例：読み込み時間、表⽰品質、操作性など)
+    
+- 画面デザインやUIについてのご意⾒
+    
+    (例：投稿⼀覧画⾯で⾒たい情報や、画⾯のレイアウトなど)
+    
+- 機能追加や改善のためのアイデアや提案
+    
+    (例：こんな機能がほしい、こんな⾒た⽬の⽅が⾒やすいなど)
+    
+- バグや技術的な問題に遭遇した場合の詳細情報
+
+### **フィードバックの提出⽅法**
+
+下記のフォームから提出お願いします
+
+[MeARフィードバックフォーム](https://docs.google.com/forms/d/1RvD-sHMe5T8REFuV_mGZTptiazWi7TzczQlPRVlVBVk/edit)
+
+## ⚙️開発環境・実施環境
+
+### エディタ
+
+- VSCode
+- PyCharm
+
+### プロジェクト管理
+
+- Notion
+- Miro
+
+### コード管理
+
+- Git/Github
+
+### 開発言語・フレームワーク
+
+#### 言語
+
+フロント：**TypeScript:** 5.1.3  
+バック：**Python**
+
+#### フレームワーク
+フロントエンド  
+- **Next.js**: 12.3.2.  
+- **TailwindCSS**: 3.3.2.  
+- (plugin)**daisyUI**:3.0.23
+バックエンド
+- **DjangoRestFramework**==3.10.0
+- **Django**==3.0.7
+
+### クラウドプラットフォーム
+
+**フロントエンド**：Vercel
+
+**バックエンド**：Render
+
+**メディアファイル**：GoogleCloudStorage
+
+
+## 🌐実施環境
+
+本アプリはAR機能を用いるため、モバイル端末でのブラウザアクセスを推奨しています
+(※デスクトップでもアプリケーション自体は動作しますが、ARの機能は使用できません)
+
+3D表示・AR機能対応ブラウザ
+
+|  | 3D表示 | AR機能 |
+| --- | --- | --- |
+| GoogleChrome | ⭕️ | ⭕️ |
+| Safari | ⭕️ | ⭕️ |
+| Firefox | ⭕️ | ❌ |
+| Microsoft Edge | ⭕️ | ❌ |
+| Brave | ⭕️ | ❌ |
+
+レイアウトに関しても、現在はモバイルでの実用のみを考えて設計しています。
+
+---
+
+## 🙍‍♂️Author：ふくえもん
+
+### X：[fukuemon362929](https://twitter.com/fukuemon362929)
+
+### Github：[Fukuemon - Overview](https://github.com/Fukuemon)
+
+### Zenn：[記事一覧](https://zenn.dev/fukuemon)
