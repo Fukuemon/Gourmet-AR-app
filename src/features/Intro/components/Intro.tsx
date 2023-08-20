@@ -2,7 +2,6 @@
 import { useState, FC } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import Image from "next/image";
 import FileUpload from "src/components/elements/Form/FileUpload";
 const DynamicModelViewer = dynamic(() => import("src/components/ModelViewer"), {
   ssr: false,
@@ -18,9 +17,9 @@ const Intro: FC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-1 justify-center items-center flex-col w-screen">
+      <main className="flex justify-center items-center flex-col w-screen">
         <div>
-          <h1 className="text-2xl font-bold mb-4">3Dモデル表示ページ</h1>
+          <div className="text-2xl font-bold my-4">3Dモデル表示ページ</div>
         </div>
 
         <div className="container max-w-screen-lg mx-auto h-full sm:h-full border border-purple-100 rounded-lg mt-4 mb-4">
@@ -28,9 +27,9 @@ const Intro: FC = () => {
         </div>
 
         <div>
-          <h1 className="m-5 text-1xl font-bold mb-2">
+          <div className="m-5 text-1xl font-bold">
             モデルをアップロードしたい場合
-          </h1>
+          </div>
           <FileUpload onUpload={setModelSrc} />
         </div>
 

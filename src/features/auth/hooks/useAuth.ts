@@ -39,12 +39,12 @@ export const useAuth = () => {
     setSwitchKey(!switchKey);
   };
 
-  // commonAsyncProcess：ログイン・新規登録の共通処理を行う関数
-  const commonAsyncProcess = async (values: PROPS_AUTHEN) => {
+  // certification：ログイン・新規登録の共通処理を行う関数
+  const certification = async (values: PROPS_AUTHEN) => {
     await dispatch(fetchCredStart());
     await dispatch(fetchAsyncLogin(values));
     if (
-      fetchAsyncLogin.rejected.match(await dispatch(fetchAsyncLogin(values)))
+      fetchAsyncLogin.rejected.match(await dispatch(fetchAsyncLogin(values))) // 認証に失敗したら、エラーを表示
     ) {
       alert("認証に失敗しました。");
       dispatch(fetchCredEnd());
@@ -61,13 +61,13 @@ export const useAuth = () => {
   const handleGuestLogin =
     (setErrors: (errors: FormikErrors<PROPS_AUTHEN>) => void) => () => {
       setErrors({}); // エラーをリセット
-      commonAsyncProcess({ email: GUEST_EMAIL, password: GUEST_PASSWORD }); // ログイン処理を呼び出す
+      certification({ email: GUEST_EMAIL, password: GUEST_PASSWORD }); // ログイン処理を呼び出す
     };
 
   // 通常のログイン・新規登録処理
   const handleSubmit = async (values: { email: string; password: string }) => {
     if (switchKey) {
-      commonAsyncProcess(values);
+      certification(values);
       await dispatch(setIsLogin());
     } else {
       // 新規登録処理
