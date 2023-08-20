@@ -32,6 +32,7 @@ const Layout: FC<LayoutProps> = ({
   return (
     <div>
       <Head>
+        <link rel="icon" href="/icon.ico" />
         <title>{title}</title>
       </Head>
       {showHeader && <Navbar title={title} />}
