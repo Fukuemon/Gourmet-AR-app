@@ -5,7 +5,7 @@ import {
   PROPS_AUTHEN,
   PROPS_NICKNAME,
   PROPS_PROFILE,
-} from "types/stores/types"; // 必要なプロパティの型をインポート
+} from "src/types/stores/types"; // 必要なプロパティの型をインポート
 import Cookie from "universal-cookie";
 import {
   createNewProfile,

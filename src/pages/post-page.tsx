@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { selectProfile } from "src/features/auth/store/authSlice";
 import Post from "src/features/Post/components/PostList";
 import Layout from "src/components/layouts/Layout";
-import { PROPS_POST } from "types/stores/types";
+import { PROPS_POST } from "src/types/stores/types";
 import { usePosts } from "src/features/Post/hooks/usePost";
 import { getPosts } from "src/features/Post/store/postSlice";
 import { NextPage } from "next";

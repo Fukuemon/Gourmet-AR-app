@@ -23,7 +23,7 @@ import {
 } from "src/features/auth/store/authSlice";
 import { AppDispatch } from "src/store/store";
 import { FormikErrors } from "formik";
-import { PROPS_AUTHEN } from "types/stores/types";
+import { PROPS_AUTHEN } from "src/types/stores/types";
 
 export const useAuth = () => {
   const router = useRouter();
