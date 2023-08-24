@@ -14,7 +14,7 @@ import {
   PROPS_AUTHEN,
   PROPS_NICKNAME,
   PROPS_PROFILE,
-} from "src/types/stores/types";
+} from "src/types/Auth/types";
 import Cookie from "universal-cookie";
 
 const cookie = new Cookie();

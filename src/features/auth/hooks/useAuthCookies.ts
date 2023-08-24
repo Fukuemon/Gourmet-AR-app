@@ -13,8 +13,7 @@ import {
   selectIsLogin,
   setIsLogin,
   setOpenSignIn,
-  setOpenSignUp,
-} from "../store/authSlice";
+} from "src/features/Auth/store/authSlice";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { MouseEventHandler, useEffect } from "react";
@@ -22,7 +21,6 @@ import { MouseEventHandler, useEffect } from "react";
 export const useAuthCookies = () => {
   const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
-  const isLogin = useSelector(selectIsLogin);
   const cookie = new Cookie();
 
   // ログイン状態をチェックし、ログインしていなければログイン画面を表示する関数

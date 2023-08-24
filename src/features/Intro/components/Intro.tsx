@@ -2,9 +2,12 @@
 import { useState, FC } from "react";
 import dynamic from "next/dynamic";
 import FileUpload from "src/components/elements/Form/FileUpload";
-const DynamicModelViewer = dynamic(() => import("src/components/ModelViewer"), {
-  ssr: false,
-});
+const DynamicModelViewer = dynamic(
+  () => import("src/components/elements/3D/ModelViewer"),
+  {
+    ssr: false,
+  }
+);
 
 const Intro: FC = () => {
   // デフォルトの3Dモデルのファイルパスを設定

@@ -7,7 +7,7 @@ import {
   fetchAsyncGetRestaurant,
   fetchAsyncGetCategory,
 } from "src/features/Post/store/postSlice";
-import { resetOpenSignIn } from "src/features/auth/store/authSlice";
+import { resetOpenSignIn } from "src/features/Auth/store/authSlice";
 import Cookie from "universal-cookie";
 import { PROPS_POST } from "src/types/stores/types";
 

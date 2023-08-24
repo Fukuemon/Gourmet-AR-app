@@ -20,7 +20,7 @@ import {
   selectIsLoadingAuth,
   selectIsLogin,
   setIsLogin,
-} from "src/features/auth/store/authSlice";
+} from "src/features/Auth/store/authSlice";
 import { AppDispatch } from "src/store/store";
 import { FormikErrors } from "formik";
 import { PROPS_AUTHEN } from "src/types/stores/types";
