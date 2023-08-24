@@ -30,7 +30,7 @@ const DetailPost = ({ staticPost, id }) => {
     };
     fetchGetPost();
     mutate();
-  }, []);
+  }, [mutate, router]);
 
   if (router.isFallback || !post) {
     return <div className="text-center">Loading...</div>;

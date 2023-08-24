@@ -14,7 +14,7 @@ import {
   getMyProfile,
   getProfiles,
   updateProfile,
-} from "src/features/Auth/store/aush"; // 非同期処理を定義した関数をインポート
+} from "src/features/Auth/store/auth"; // 非同期処理を定義した関数をインポート
 
 const cookie = new Cookie();
 
