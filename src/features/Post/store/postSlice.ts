@@ -7,7 +7,7 @@ import {
   PROPS_RESTAURANT,
   PROPS_CATEGORY,
   PROPS_POST,
-} from "src/types/stores/types"; // 必要なプロパティの型をインポート
+} from "src/types/Post/types"; // 必要なプロパティの型をインポート
 import Cookie from "universal-cookie";
 
 const apiUrlPost = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/post/`;

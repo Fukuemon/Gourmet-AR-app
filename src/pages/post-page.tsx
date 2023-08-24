@@ -5,7 +5,7 @@ import { usePosts } from "src/features/Post/hooks/usePost";
 import { getPosts } from "src/features/Post/store/postSlice";
 import PostList from "src/features/Post/components/PostList";
 import Layout from "src/components/layouts/Layout";
-import { PROPS_POST } from "src/types/stores/types";
+import { PROPS_POST } from "src/types/Post/types";
 
 const Postpage: NextPage<{ Posts: PROPS_POST[] }> = ({ Posts }) => {
   const user = useSelector(selectProfile);
