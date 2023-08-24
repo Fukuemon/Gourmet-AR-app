@@ -7,9 +7,9 @@ import { useSelector } from "react-redux";
 import {
   selectIsLogin,
   selectProfile,
-} from "src/features/auth/store/authSlice";
+} from "src/features/Auth/store/authSlice";
 import { FC } from "react";
-import { useAuthCookies } from "src/features/auth/hooks/useAuthCookies";
+import { useAuthCookies } from "src/features/Auth/hooks/useAuthCookies";
 import Link from "next/link";
 
 interface NavbarProps {

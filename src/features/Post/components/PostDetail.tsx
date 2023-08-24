@@ -1,10 +1,13 @@
 import Image from "next/image";
-import { PROPS_POST } from "src/types/stores/types";
+import { PROPS_POST } from "src/types/Post/types";
 import dynamic from "next/dynamic";
 
-const DynamicModelViewer = dynamic(() => import("src/components/ModelViewer"), {
-  ssr: false,
-});
+const DynamicModelViewer = dynamic(
+  () => import("src/components/elements/3D/ModelViewer"),
+  {
+    ssr: false,
+  }
+);
 
 const PostDetail: React.FC<PROPS_POST> = ({
   //propsとして投稿のデータを受け取る

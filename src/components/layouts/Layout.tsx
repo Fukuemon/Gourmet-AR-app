@@ -1,8 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
 import { FC, ReactNode } from "react";
-import Navbar from "src/components/layouts/Header/Navbar";
-import { ButtomNavBar } from "./BottomNavbar/BottomNavBar";
+import Navbar from "src/components/elements/Navbar/Navbar";
+import { ButtomNavBar } from "../elements/Navbar/BottomNavBar";
 
 interface LayoutProps {
   children: ReactNode;

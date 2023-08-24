@@ -5,7 +5,7 @@ import {
   PROPS_AUTHEN,
   PROPS_NICKNAME,
   PROPS_PROFILE,
-} from "src/types/stores/types"; // 必要なプロパティの型をインポート
+} from "src/types/Auth/types"; // 必要なプロパティの型をインポート
 import Cookie from "universal-cookie";
 import {
   createNewProfile,
@@ -14,7 +14,7 @@ import {
   getMyProfile,
   getProfiles,
   updateProfile,
-} from "src/features/auth/store/aush"; // 非同期処理を定義した関数をインポート
+} from "src/features/Auth/store/aush"; // 非同期処理を定義した関数をインポート
 
 const cookie = new Cookie();
 

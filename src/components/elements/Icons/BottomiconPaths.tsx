@@ -79,7 +79,7 @@ export function PlusCircleIcon(props: SVGAttributes<SVGElement>) {
 // Cube
 export function CubeTransparentIcon(props: SVGAttributes<SVGElement>) {
   return (
-    <Link href="/3d-introduction">
+    <Link href="/Intro">
       <a>
         <svg
           className="w-8 h-8 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"

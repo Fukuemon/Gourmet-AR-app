@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { PROPS_POST } from "src/types/stores/types";
+import { PROPS_POST } from "src/types/Post/types";
 
-const Post: React.FC<PROPS_POST> = ({
+const PostList: React.FC<PROPS_POST> = ({
   //propsとして投稿のデータを受け取る
   nickName,
   id,
@@ -57,4 +57,4 @@ const Post: React.FC<PROPS_POST> = ({
   );
 };
 
-export default Post;
+export default PostList;
