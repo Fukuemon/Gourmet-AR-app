@@ -73,33 +73,36 @@ export const fetchAsyncGetProfs = createAsyncThunk(
   }
 );
 
-// authのsliceを作成
-export const authSlice = createSlice({
-  name: "auth", // sliceの名前を定義
-  initialState: {
-    // 初期状態を設定
-    isLogin: false, // ログイン状態
-    openSignin: true, // ログイン画面の表示状態
-    openSignUp: false, // 新規登録画面の表示状態
-    openProfile: false, // プロフィール画面の表示状態
-    isLoadingAuth: false, // 認証のロード状態
-    myprofile: {
+// authのstateの初期状態を定義
+const initialState = {
+  // 初期状態を設定
+  isLogin: false, // ログイン状態
+  openSignin: true, // ログイン画面の表示状態
+  openSignUp: false, // 新規登録画面の表示状態
+  openProfile: false, // プロフィール画面の表示状態
+  isLoadingAuth: false, // 認証のロード状態
+  myprofile: {
+    id: 0,
+    nickName: "",
+    userProfile: 0,
+    created_on: "",
+    img: "",
+  },
+  profiles: [
+    {
       id: 0,
       nickName: "",
       userProfile: 0,
       created_on: "",
       img: "",
     },
-    profiles: [
-      {
-        id: 0,
-        nickName: "",
-        userProfile: 0,
-        created_on: "",
-        img: "",
-      },
-    ],
-  },
+  ],
+};
+
+// authのsliceを作成
+export const authSlice = createSlice({
+  name: "auth", // sliceの名前を定義
+  initialState, // 初期状態を定義
   reducers: {
     // 各種reducerを定義
     fetchCredStart(state) {
